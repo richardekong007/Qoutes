@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Qoutes</string>
+    <string name="author_item_button_text">View Quote</string>
+    <string name="Quote">Quote:</string>
+    <string name="birth_place_button_text">Birth Place</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="make_quote_instruction">Say Something please!</string>
+    <string name="post_quote_text">Post</string>
+    <string name="save_quote_text">Save</string>
 </resources>

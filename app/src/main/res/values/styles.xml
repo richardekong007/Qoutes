@@ -8,4 +8,26 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="buttonStyle">
+        <item name="android:textColor">@color/teal_green</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="labelStyle">
+        <item name="android:background">@drawable/rounded_rectangle_teal</item>
+        <item name="android:textSize">@dimen/margin_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name ="textInputStyle">
+        <item name = "android:textColor">@android:color/black</item>
+        <item name = "android:textColorHint">@color/teal_green</item>
+        <item name = " android:textSize">@dimen/text_medium</item>
+        <item name= "android:textStyle">normal</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+    </style>
+
 </resources>
