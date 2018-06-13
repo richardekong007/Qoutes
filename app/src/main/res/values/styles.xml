@@ -30,4 +30,17 @@
         <item name="android:background">@drawable/rounded_rectangle</item>
     </style>
 
+    <style name = "normalTextStyle">
+        <item name = "android:textColor">@color/teal_green</item>
+        <item name = "android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name = "switchToggleStyle">
+        <item name="colorControlActivated">@color/teal_green</item>
+        <item name="colorSwitchThumbNormal">@android:color/white</item>
+        <item name="android:colorForeground">#42221f1f</item>
+        <item name="android:textColor">@color/teal_green</item>
+    </style>
+
 </resources>

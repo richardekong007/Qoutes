@@ -7,4 +7,9 @@
     <string name="make_quote_instruction">Say Something please!</string>
     <string name="post_quote_text">Post</string>
     <string name="save_quote_text">Save</string>
+    <string name="location_label">Location</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="menu_make_quote">Make Quote</string>
+    <string name="menu_view_quote">Saved Qoutes</string>
+    <string name="menu_exit">Exit</string>
 </resources>

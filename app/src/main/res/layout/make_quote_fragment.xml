@@ -35,13 +35,18 @@
                 style="@style/textInputStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/first_name_hint"
+                android:hint="@string/last_name_hint"
                 />
+
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/location_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:theme="@style/switchToggleStyle"
+                android:text="@string/location_label"
+                android:checked="false"
+                android:textColor="@color/teal_green"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"/>
 

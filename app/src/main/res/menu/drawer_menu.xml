@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="make_quote"
+            android:icon="@drawable/ic_quote"
+            android:title="@string/menu_make_quote"/>
+        <item
+            android:id="@+id/view_quotes"
+            android:icon="@drawable/ic_view"
+            android:title="@string/menu_view_quote"/>
+
+        <item android:id="@+id/exit"
+            android:icon="@drawable/ic_exit"
+            android:title="@string/menu_exit"/>
+
+    </group>
+</menu>
