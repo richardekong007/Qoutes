@@ -1,4 +1,4 @@
-package richydave.com.qoutes;
+package com.richydave.qoutes;
 
 import org.junit.Test;
 

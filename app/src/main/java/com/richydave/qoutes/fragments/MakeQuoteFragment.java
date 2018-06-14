@@ -1,4 +1,4 @@
-package richydave.com.qoutes.fragments;
+package com.richydave.qoutes.fragments;
 
 import android.support.v4.app.Fragment;
 
