@@ -10,6 +10,8 @@
     <string name="location_label">Location</string>
     <string name="last_name_hint">Last Name</string>
     <string name="menu_make_quote">Make Quote</string>
-    <string name="menu_view_quote">Saved Qoutes</string>
+    <string name="local_quotes">Local Quotes</string>
     <string name="menu_exit">Exit</string>
+    <string name="sample_profile_text">Sample Name</string>
+    <string name="online_quotes">Online Quotes</string>
 </resources>

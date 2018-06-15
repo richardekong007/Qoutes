@@ -27,6 +27,7 @@
         <item name = "android:textColorHint">@color/teal_green</item>
         <item name = " android:textSize">@dimen/text_medium</item>
         <item name= "android:textStyle">normal</item>
+        <item name ="android:inputType">textAutoComplete</item>
         <item name="android:background">@drawable/rounded_rectangle</item>
     </style>
 
