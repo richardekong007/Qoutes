@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.richydave.qoutes.R;
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         setNavigationItemSelectedListener();
+        placeFirstFragment();
     }
 
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void placeFragment() {
+    private void placeFirstFragment() {
         FragmentUtil.replaceFragment(getFragmentManager(), new OnlineQuotesFragment(), null, true);
     }
 

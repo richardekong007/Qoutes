@@ -55,7 +55,4 @@ public class MakeQuoteFragment extends Fragment {
     public void onSaveClick(){
 
     }
-
-
-
 }
