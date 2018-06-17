@@ -1,7 +1,7 @@
 package com.richydave.qoutes.fragments;
 
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,10 @@ import android.widget.TextView;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import com.bumptech.glide.Glide;
+import com.richydave.qoutes.Constant;
 import com.richydave.qoutes.R;
+import com.richydave.qoutes.util.FragmentUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,8 +22,13 @@ import butterknife.ButterKnife;
 
 public class ViewQuoteFragment extends Fragment {
 
+    private String birthPlace;
+
     @BindView(R.id.avatar)
     CircleImageView avatar;
+
+    @BindView(R.id.author_name)
+    TextView authorNameText;
 
     @BindView(R.id.quote)
     TextView quoteText;
@@ -28,15 +36,40 @@ public class ViewQuoteFragment extends Fragment {
     @BindView(R.id.birth_place)
     AppCompatButton BirthPlaceButton;
 
-    public View onCreate(LayoutInflater inflater, ViewGroup container, Bundle saveinstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_view_quote, container, false);
         ButterKnife.bind(this, view);
+        init();
         return view;
     }
 
-    @OnClick(R.id.birth_place)
-    public void onBirthPlaceClick(){
+    private void init() {
+        Bundle quoteDetails;
+        if (getArguments() != null) {
 
+            quoteDetails = getArguments();
+            Glide.with(getActivity())
+                    .load(quoteDetails.get(Constant.PHOTO_URI))
+                    .into(avatar);
+            authorNameText.setText(quoteDetails.getString(Constant.AUTHOR));
+            quoteText.setText(quoteDetails.getString(Constant.STATEMENT));
+            birthPlace = quoteDetails.getString(Constant.BIRTH_PLACE);
+        }
+    }
+
+    @OnClick(R.id.birth_place)
+    public void onBirthPlaceClick() {
+        if (birthPlace != null) {
+            Bundle argument = passBirthPlaceDetail();
+            FragmentUtil.replaceFragment(getFragmentManager(), new BirthPlaceFragment(), argument, true);
+        }
+    }
+
+    private Bundle passBirthPlaceDetail() {
+        Bundle birthPlaceBundle = new Bundle();
+        birthPlaceBundle.putString(Constant.BIRTH_PLACE, birthPlace);
+        return birthPlaceBundle;
     }
 }

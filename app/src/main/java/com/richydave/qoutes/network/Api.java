@@ -11,6 +11,8 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import static com.richydave.qoutes.Constant.ACCEPT;
 import static com.richydave.qoutes.Constant.BASE_URL;
 import static com.richydave.qoutes.Constant.CONTENT_TYPE;
@@ -56,6 +58,7 @@ public class Api {
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 

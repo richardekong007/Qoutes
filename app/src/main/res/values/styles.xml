@@ -12,6 +12,7 @@
         <item name="android:textColor">@color/teal_green</item>
         <item name="android:background">@drawable/rounded_rectangle</item>
         <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="labelStyle">
@@ -22,22 +23,22 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name ="textInputStyle">
-        <item name = "android:textColor">@android:color/black</item>
-        <item name = "android:textColorHint">@color/teal_green</item>
-        <item name = " android:textSize">@dimen/text_medium</item>
-        <item name= "android:textStyle">normal</item>
-        <item name ="android:inputType">textAutoComplete</item>
+    <style name="textInputStyle">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorHint">@color/teal_green</item>
+        <item name=" android:textSize">@dimen/text_medium</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:inputType">textAutoComplete</item>
         <item name="android:background">@drawable/rounded_rectangle</item>
     </style>
 
-    <style name = "normalTextStyle">
-        <item name = "android:textColor">@color/teal_green</item>
-        <item name = "android:textStyle">normal</item>
+    <style name="normalTextStyle">
+        <item name="android:textColor">@color/teal_green</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/text_medium</item>
     </style>
 
-    <style name = "switchToggleStyle">
+    <style name="switchToggleStyle">
         <item name="colorControlActivated">@color/teal_green</item>
         <item name="colorSwitchThumbNormal">@android:color/white</item>
         <item name="android:colorForeground">#42221f1f</item>

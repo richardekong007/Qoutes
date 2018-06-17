@@ -18,4 +18,6 @@ public interface Constant {
     public static String JSON_APPLICATION = "application/json" ;
 
     public static String CONTENT_TYPE = "content_type";
+
+    public static final String AUTHOR = "AUTHOR" ;
 }

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         setNavigationItemSelectedListener();
         placeFirstFragment();
-    }
 
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -58,8 +59,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+    }
+
     private void placeFirstFragment() {
-        FragmentUtil.replaceFragment(getFragmentManager(), new OnlineQuotesFragment(), null, true);
+        FragmentUtil.replaceFragment(getSupportFragmentManager(), new OnlineQuotesFragment(), null, false);
     }
 
     private void setNavigationItemSelectedListener() {
@@ -70,15 +76,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.make_quote:
-                        FragmentUtil.replaceFragment(getFragmentManager(), new MakeQuoteFragment(), null, true);
+                        FragmentUtil.replaceFragment(getSupportFragmentManager(), new MakeQuoteFragment(), null, true);
                         drawer.closeDrawers();
                         return true;
                     case R.id.view_online_quotes:
-                        FragmentUtil.replaceFragment(getFragmentManager(), new OnlineQuotesFragment(), null, true);
+                        FragmentUtil.replaceFragment(getSupportFragmentManager(), new OnlineQuotesFragment(), null, true);
                         drawer.closeDrawers();
                         return true;
                     case R.id.view_saved_quotes:
-                        FragmentUtil.replaceFragment(getFragmentManager(), new LocalQuotesFragment(), null, true);
+                        FragmentUtil.replaceFragment(getSupportFragmentManager(), new LocalQuotesFragment(), null, true);
                         drawer.closeDrawers();
                         return true;
                     case R.id.exit:

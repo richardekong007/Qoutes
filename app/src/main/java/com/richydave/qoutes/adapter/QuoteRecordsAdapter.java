@@ -1,7 +1,5 @@
 package com.richydave.qoutes.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +27,8 @@ public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapte
 
     private List<Quote> quoteRecords;
 
+    private ViewQuoteClickListener viewQuoteClickListener;
+
     public QuoteRecordsAdapter(List<Quote> quoteRecords) {
         this.quoteRecords = quoteRecords;
     }
@@ -51,18 +51,24 @@ public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapte
 
         holder.authorName.setText(quoteRecord.getAuthor());
         holder.viewQuote.setOnClickListener(click -> {
-            passDataToFragment(quoteRecord);
-            FragmentUtil.replaceFragment(((AppCompatActivity) holder.itemView.getContext()).getFragmentManager(),
-                    new ViewQuoteFragment(), null, true);
+            Bundle args = passDataToFragment(quoteRecord);
+            viewQuoteClickListener.onViewQuoteClick(args);
         });
     }
 
-    private void passDataToFragment(Quote quoteRecord) {
+    public void setViewQuoteClickListener(ViewQuoteClickListener viewQuoteClickListener) {
+        this.viewQuoteClickListener = viewQuoteClickListener;
+    }
+
+    private Bundle passDataToFragment(Quote quoteRecord) {
 
         Bundle args = new Bundle();
         args.putString(Constant.PHOTO_URI, quoteRecord.getPhotoUrl());
+        args.putString(Constant.AUTHOR, quoteRecord.getAuthor());
         args.putString(Constant.STATEMENT, quoteRecord.getStatement());
-        args.putString(Constant.BIRTH_PLACE, quoteRecord.getBirthplace());
+        args.putString(Constant.BIRTH_PLACE, quoteRecord.getBirthPlace());
+
+        return args;
     }
 
     @Override
@@ -84,5 +90,10 @@ public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapte
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface ViewQuoteClickListener {
+
+        void onViewQuoteClick(Bundle quoteDetial);
     }
 }

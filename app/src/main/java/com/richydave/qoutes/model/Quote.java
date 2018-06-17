@@ -13,15 +13,15 @@ public class Quote {
     @Expose
     private String author;
 
-    private String birthplace;
+    private String birthPlace;
 
     @SerializedName("photo")
     @Expose
     private String photoUrl;
 
-    private Integer createdAt;
+    private long createdAt;
 
-    private Integer updatedAt;
+    private long updatedAt;
 
 
 
@@ -37,19 +37,19 @@ public class Quote {
         return author;
     }
 
-    public String getBirthplace() {
-        return birthplace;
+    public String getBirthPlace() {
+        return birthPlace;
     }
 
     public String getPhotoUrl() {
         return photoUrl;
     }
 
-    public Integer getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public Integer getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 }
