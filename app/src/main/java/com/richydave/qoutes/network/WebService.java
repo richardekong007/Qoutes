@@ -9,6 +9,6 @@ import retrofit2.http.GET;
 
 public interface WebService {
     //url endpoint
-    @GET("bins/11euhy")
+    @GET("bins/1hjozq")
     Single<List<Quote>> getOnlineQuotes();
 }
