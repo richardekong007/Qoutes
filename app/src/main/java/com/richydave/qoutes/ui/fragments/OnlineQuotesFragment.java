@@ -1,4 +1,4 @@
-package com.richydave.qoutes.fragments;
+package com.richydave.qoutes.ui.fragments;
 
 import android.location.Address;
 import android.location.Geocoder;

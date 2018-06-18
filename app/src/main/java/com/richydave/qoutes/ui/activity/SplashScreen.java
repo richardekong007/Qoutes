@@ -1,4 +1,4 @@
-package com.richydave.qoutes.activity;
+package com.richydave.qoutes.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.richydave.qoutes.fragments;
+package com.richydave.qoutes.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

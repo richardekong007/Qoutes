@@ -1,8 +1,6 @@
 package com.richydave.qoutes.adapter;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,11 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.richydave.qoutes.Constant;
 import com.richydave.qoutes.R;
-import com.richydave.qoutes.fragments.ViewQuoteFragment;
 import com.richydave.qoutes.model.Quote;
-import com.richydave.qoutes.util.FragmentUtil;
 
 import java.util.List;
 
