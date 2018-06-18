@@ -44,7 +44,7 @@ public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapte
                 .load(quoteRecord.getPhotoUrl())
                 .into(holder.avatar);
 
-        holder.authorName.setText(quoteRecord.getAuthor());
+        holder.authorName.setText(quoteRecord.getAuthorName());
         holder.viewQuote.setOnClickListener(click -> {
             viewQuoteClickListener.onViewQuoteClick(quoteRecord);
         });

@@ -14,4 +14,6 @@
     <string name="menu_exit">Exit</string>
     <string name="sample_profile_text">Sample Name</string>
     <string name="online_quotes">Online Quotes</string>
+    <string name="Camera">Camera</string>
+    <string name="gallery">Gallery</string>
 </resources>

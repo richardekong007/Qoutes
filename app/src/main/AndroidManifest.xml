@@ -11,11 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:name="com.richydave.quotes.QuoteApp">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
+
+        <meta-data android:name="AA_DB_NAME" android:value="LocalQuotes.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
 
         <activity android:name=".ui.activity.SplashScreen">
 

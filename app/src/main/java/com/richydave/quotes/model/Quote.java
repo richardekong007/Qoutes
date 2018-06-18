@@ -12,7 +12,7 @@ public class Quote {
 
     @SerializedName("Author")
     @Expose
-    private String author;
+    private String authorName;
 
     private String birthPlace;
 
@@ -36,8 +36,8 @@ public class Quote {
         return statement;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public String getBirthPlace() {
