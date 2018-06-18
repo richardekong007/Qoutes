@@ -1,5 +1,8 @@
 package com.richydave.qoutes.fragments;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,14 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.richydave.qoutes.Constant;
 import com.richydave.qoutes.R;
 import com.richydave.qoutes.adapter.QuoteRecordsAdapter;
 import com.richydave.qoutes.model.Quote;
 import com.richydave.qoutes.network.Api;
 import com.richydave.qoutes.util.FragmentUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +63,15 @@ public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapte
     }
 
     @Override
-    public void onViewQuoteClick(Bundle args) {
+    public void onViewQuoteClick(Quote quote) {
+
+        Bundle args = new Bundle();
+        args.putString(Constant.PHOTO_URI, quote.getPhotoUrl());
+        args.putString(Constant.AUTHOR, quote.getAuthor());
+        args.putString(Constant.STATEMENT, quote.getStatement());
+        args.putString(Constant.BIRTH_PLACE,quote.getBirthPlace());
+        args.putParcelable(Constant.LOCATION, quote.getLocation());
+
         FragmentUtil.replaceFragment(getFragmentManager(), new ViewQuoteFragment(), args, true);
     }
 
@@ -78,6 +93,13 @@ public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapte
         disposable.add(Api.getInstance().getWebService().getOnlineQuotes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .map(mapper -> {
+                    for (Quote quote : mapper) {
+                        LatLng location = getLocation(quote.getBirthPlace());
+                        quote.setLocation(location);
+                    }
+                    return mapper;
+                })
                 .subscribeWith(new DisposableSingleObserver<List<Quote>>() {
                     @Override
                     public void onSuccess(List<Quote> quotes) {
@@ -94,6 +116,22 @@ public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapte
                         e.printStackTrace();
                     }
                 }));
+    }
+
+    private LatLng getLocation(String place) {
+        LatLng location = null;
+        try {
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocationName(place, 1);
+            if (addresses.size() > 0) {
+                double lat = addresses.get(0).getLatitude();
+                double lng = addresses.get(0).getLongitude();
+                location = new LatLng(lat, lng);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return location;
     }
 
     private void setLoading(boolean loading) {

@@ -13,11 +13,19 @@ public interface Constant {
 
     public static int REQUEST_TIMEOUT = 60;
 
-    public static String ACCEPT = "Accept" ;
+    public static String ACCEPT = "Accept";
 
-    public static String JSON_APPLICATION = "application/json" ;
+    public static String JSON_APPLICATION = "application/json";
 
     public static String CONTENT_TYPE = "content_type";
 
-    public static final String AUTHOR = "AUTHOR" ;
+    public static final String AUTHOR = "AUTHOR";
+
+    public static final  String LOCATION = "LOCATION" ;
+
+    public static final int ZOOM_LEVEL = 15;
+
+    public static final int BEARING = 0;
+
+    public static final int TILT_ANGLE = 45;
 }

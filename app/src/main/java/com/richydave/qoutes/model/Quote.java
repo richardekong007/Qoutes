@@ -1,5 +1,6 @@
 package com.richydave.qoutes.model;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -22,6 +23,8 @@ public class Quote {
     private long createdAt;
 
     private long updatedAt;
+
+    private LatLng location;
 
 
 
@@ -51,5 +54,13 @@ public class Quote {
 
     public long getUpdatedAt() {
         return updatedAt;
+    }
+
+    public LatLng getLocation() {
+        return location;
+    }
+
+    public void setLocation(LatLng location) {
+        this.location = location;
     }
 }

@@ -12,6 +12,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.richydave.qoutes.Constant;
 import com.richydave.qoutes.R;
 import com.richydave.qoutes.util.FragmentUtil;
@@ -23,6 +24,8 @@ import butterknife.ButterKnife;
 public class ViewQuoteFragment extends Fragment {
 
     private String birthPlace;
+
+    private LatLng coordinates;
 
     @BindView(R.id.avatar)
     CircleImageView avatar;
@@ -56,12 +59,13 @@ public class ViewQuoteFragment extends Fragment {
             authorNameText.setText(quoteDetails.getString(Constant.AUTHOR));
             quoteText.setText(quoteDetails.getString(Constant.STATEMENT));
             birthPlace = quoteDetails.getString(Constant.BIRTH_PLACE);
+            coordinates = quoteDetails.getParcelable(Constant.LOCATION);
         }
     }
 
     @OnClick(R.id.birth_place)
     public void onBirthPlaceClick() {
-        if (birthPlace != null) {
+        if (birthPlace != null && coordinates != null) {
             Bundle argument = passBirthPlaceDetail();
             FragmentUtil.replaceFragment(getFragmentManager(), new BirthPlaceFragment(), argument, true);
         }
@@ -70,6 +74,7 @@ public class ViewQuoteFragment extends Fragment {
     private Bundle passBirthPlaceDetail() {
         Bundle birthPlaceBundle = new Bundle();
         birthPlaceBundle.putString(Constant.BIRTH_PLACE, birthPlace);
+        birthPlaceBundle.putParcelable(Constant.LOCATION,coordinates);
         return birthPlaceBundle;
     }
 }

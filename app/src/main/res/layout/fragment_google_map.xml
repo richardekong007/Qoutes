@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <ProgressBar
-        android:id="@+id/progress_indicator"
-        android:layout_width="@dimen/progress_indicator_size"
-        android:layout_height="@dimen/progress_indicator_size"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        android:backgroundTint="@color/teal_green"/>
 
     <fragment
         android:id="@+id/map"
@@ -19,4 +11,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

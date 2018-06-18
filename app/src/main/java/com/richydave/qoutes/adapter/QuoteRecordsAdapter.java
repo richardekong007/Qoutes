@@ -51,24 +51,12 @@ public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapte
 
         holder.authorName.setText(quoteRecord.getAuthor());
         holder.viewQuote.setOnClickListener(click -> {
-            Bundle args = passDataToFragment(quoteRecord);
-            viewQuoteClickListener.onViewQuoteClick(args);
+            viewQuoteClickListener.onViewQuoteClick(quoteRecord);
         });
     }
 
     public void setViewQuoteClickListener(ViewQuoteClickListener viewQuoteClickListener) {
         this.viewQuoteClickListener = viewQuoteClickListener;
-    }
-
-    private Bundle passDataToFragment(Quote quoteRecord) {
-
-        Bundle args = new Bundle();
-        args.putString(Constant.PHOTO_URI, quoteRecord.getPhotoUrl());
-        args.putString(Constant.AUTHOR, quoteRecord.getAuthor());
-        args.putString(Constant.STATEMENT, quoteRecord.getStatement());
-        args.putString(Constant.BIRTH_PLACE, quoteRecord.getBirthPlace());
-
-        return args;
     }
 
     @Override
@@ -94,6 +82,6 @@ public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapte
 
     public interface ViewQuoteClickListener {
 
-        void onViewQuoteClick(Bundle quoteDetial);
+        void onViewQuoteClick(Quote quotes);
     }
 }

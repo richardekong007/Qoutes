@@ -1,8 +1,7 @@
 package com.richydave.qoutes.fragments;
 
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,29 +19,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.richydave.qoutes.Constant;
 import com.richydave.qoutes.R;
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.richydave.qoutes.Constant.BEARING;
+import static com.richydave.qoutes.Constant.TILT_ANGLE;
+import static com.richydave.qoutes.Constant.ZOOM_LEVEL;
 
 
 public class BirthPlaceFragment extends Fragment implements OnMapReadyCallback {
 
-    private static final int ZOOM_LEVEL = 15;
-
-    private static final int BEARING = 0;
-
-    private static final int TILT_ANGLE = 45;
 
     private SupportMapFragment mapFragment;
 
-    private Address address;
-
-    private LatLng coordinates;
-
-    @BindView(R.id.progress_indicator)
-    ProgressBar progressIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
@@ -74,42 +66,24 @@ public class BirthPlaceFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        setLoading(true);
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocationName(receiveLocationName(), 1);
-            if (!addresses.isEmpty() || addresses.size() > 0) {
-                double lat = addresses.get(0).getLatitude();
-                double lng = addresses.get(0).getLongitude();
-                setLoading(false);
-                coordinates = new LatLng(lat, lng);
-                googleMap.addMarker(new MarkerOptions().position(coordinates).title(receiveLocationName()));
-                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                CameraPosition cameraPosition = CameraPosition.builder()
-                        .target(coordinates)
-                        .zoom(ZOOM_LEVEL)
-                        .bearing(BEARING)
-                        .tilt(TILT_ANGLE)
-                        .build();
-                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        } catch (IOException e) {
-            setLoading(false);
-            e.printStackTrace();
-        }
 
-    }
-
-    private String receiveLocationName() {
-        String locationName = "";
+        String birthPlace = "";
+        LatLng coordinates = new LatLng(0, 0);
         if (getArguments() != null) {
-            Bundle passedLocationName = getArguments();
-            locationName = passedLocationName.getString(Constant.BIRTH_PLACE);
+            Bundle locationDetails = getArguments();
+            birthPlace = locationDetails.getString(Constant.BIRTH_PLACE);
+            coordinates = locationDetails.getParcelable(Constant.LOCATION);
         }
-        return locationName;
+        googleMap.addMarker(new MarkerOptions().position(coordinates).title(birthPlace));
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        CameraPosition cameraPosition = CameraPosition.builder()
+                .target(coordinates)
+                .zoom(ZOOM_LEVEL)
+                .bearing(BEARING)
+                .tilt(TILT_ANGLE)
+                .build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
     }
 
-    private void setLoading(boolean loading) {
-        progressIndicator.setVisibility(loading ? View.VISIBLE : View.GONE);
-    }
 }
