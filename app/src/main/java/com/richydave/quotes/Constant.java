@@ -1,5 +1,7 @@
 package com.richydave.quotes;
 
+import android.content.IntentSender;
+
 public interface Constant {
 
     public static final String BASE_URL = "https://api.myjson.com/";
@@ -28,4 +30,10 @@ public interface Constant {
     public static final int BEARING = 0;
 
     public static final int TILT_ANGLE = 45;
+    
+    public static String IMAGE_CONTENT_TYPE = "image/*" ;
+
+    public static  CharSequence SELECT_IMAGE_INSTRUCTION = "Select Image";
+
+    public static int IMAGE_PICK_CODE = 100;
 }
