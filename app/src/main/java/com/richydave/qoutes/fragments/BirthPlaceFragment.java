@@ -1,12 +1,11 @@
 package com.richydave.qoutes.fragments;
 
 import android.os.Bundle;
-import android.os.Handler;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -19,10 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.richydave.qoutes.Constant;
 import com.richydave.qoutes.R;
-
-import java.util.HashMap;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.richydave.qoutes.Constant.BEARING;
