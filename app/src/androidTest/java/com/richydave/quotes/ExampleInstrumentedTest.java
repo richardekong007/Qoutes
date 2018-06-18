@@ -1,4 +1,4 @@
-package com.richydave.qoutes;
+package com.richydave.quotes;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

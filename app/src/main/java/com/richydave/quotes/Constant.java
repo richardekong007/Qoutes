@@ -1,4 +1,4 @@
-package com.richydave.qoutes;
+package com.richydave.quotes;
 
 public interface Constant {
 

@@ -1,11 +1,11 @@
-package com.richydave.qoutes.ui.activity;
+package com.richydave.quotes.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Handler;
 
-import com.richydave.qoutes.R;
+import com.richydave.quotes.R;
 
 public class SplashScreen extends AppCompatActivity {
 

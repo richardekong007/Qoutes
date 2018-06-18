@@ -1,4 +1,4 @@
-package com.richydave.qoutes.ui.fragments;
+package com.richydave.quotes.ui.fragments;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.richydave.qoutes.Constant;
-import com.richydave.qoutes.R;
-import com.richydave.qoutes.adapter.QuoteRecordsAdapter;
-import com.richydave.qoutes.model.Quote;
-import com.richydave.qoutes.network.Api;
-import com.richydave.qoutes.util.FragmentUtil;
+import com.richydave.quotes.Constant;
+import com.richydave.quotes.R;
+import com.richydave.quotes.adapter.QuoteRecordsAdapter;
+import com.richydave.quotes.model.Quote;
+import com.richydave.quotes.network.Api;
+import com.richydave.quotes.util.FragmentUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapte
         View view = inflater.inflate(R.layout.fragment_online_records, container, false);
         ButterKnife.bind(this, view);
         init();
-
+        setRetainInstance(true);
         return view;
     }
 

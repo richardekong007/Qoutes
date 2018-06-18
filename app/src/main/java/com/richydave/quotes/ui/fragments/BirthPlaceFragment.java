@@ -1,4 +1,4 @@
-package com.richydave.qoutes.ui.fragments;
+package com.richydave.quotes.ui.fragments;
 
 import android.os.Bundle;
 
@@ -16,30 +16,31 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.richydave.qoutes.Constant;
-import com.richydave.qoutes.R;
+import com.richydave.quotes.R;
 import butterknife.ButterKnife;
 
-import static com.richydave.qoutes.Constant.BEARING;
-import static com.richydave.qoutes.Constant.TILT_ANGLE;
-import static com.richydave.qoutes.Constant.ZOOM_LEVEL;
+import static com.richydave.quotes.Constant.BEARING;
+import static com.richydave.quotes.Constant.BIRTH_PLACE;
+import static com.richydave.quotes.Constant.LOCATION;
+import static com.richydave.quotes.Constant.TILT_ANGLE;
+import static com.richydave.quotes.Constant.ZOOM_LEVEL;
 
 
 public class BirthPlaceFragment extends Fragment implements OnMapReadyCallback {
 
 
-    private SupportMapFragment mapFragment;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_google_map, container, false);
-        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
         ButterKnife.bind(this, view);
+        setRetainInstance(true);
         return view;
     }
 
@@ -66,8 +67,8 @@ public class BirthPlaceFragment extends Fragment implements OnMapReadyCallback {
         LatLng coordinates = new LatLng(0, 0);
         if (getArguments() != null) {
             Bundle locationDetails = getArguments();
-            birthPlace = locationDetails.getString(Constant.BIRTH_PLACE);
-            coordinates = locationDetails.getParcelable(Constant.LOCATION);
+            birthPlace = locationDetails.getString(BIRTH_PLACE);
+            coordinates = locationDetails.getParcelable(LOCATION);
         }
         googleMap.addMarker(new MarkerOptions().position(coordinates).title(birthPlace));
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);

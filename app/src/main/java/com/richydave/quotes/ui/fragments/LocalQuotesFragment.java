@@ -1,4 +1,4 @@
-package com.richydave.qoutes.ui.fragments;
+package com.richydave.quotes.ui.fragments;
 
 
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.richydave.qoutes.R;
+import com.richydave.quotes.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

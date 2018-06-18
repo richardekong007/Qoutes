@@ -1,4 +1,4 @@
-package com.richydave.qoutes.model;
+package com.richydave.quotes.model;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;

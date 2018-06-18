@@ -1,4 +1,4 @@
-package com.richydave.qoutes.adapter;
+package com.richydave.quotes.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.richydave.qoutes.R;
-import com.richydave.qoutes.model.Quote;
+import com.richydave.quotes.R;
+import com.richydave.quotes.model.Quote;
 
 import java.util.List;
 

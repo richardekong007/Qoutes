@@ -1,6 +1,6 @@
-package com.richydave.qoutes.network;
+package com.richydave.quotes.network;
 
-import com.richydave.qoutes.model.Quote;
+import com.richydave.quotes.model.Quote;
 
 import java.util.List;
 

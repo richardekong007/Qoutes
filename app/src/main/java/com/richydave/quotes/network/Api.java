@@ -1,4 +1,4 @@
-package com.richydave.qoutes.network;
+package com.richydave.quotes.network;
 
 import android.content.Context;
 
@@ -13,11 +13,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.richydave.qoutes.Constant.ACCEPT;
-import static com.richydave.qoutes.Constant.BASE_URL;
-import static com.richydave.qoutes.Constant.CONTENT_TYPE;
-import static com.richydave.qoutes.Constant.JSON_APPLICATION;
-import static com.richydave.qoutes.Constant.REQUEST_TIMEOUT;
+import static com.richydave.quotes.Constant.ACCEPT;
+import static com.richydave.quotes.Constant.BASE_URL;
+import static com.richydave.quotes.Constant.CONTENT_TYPE;
+import static com.richydave.quotes.Constant.JSON_APPLICATION;
+import static com.richydave.quotes.Constant.REQUEST_TIMEOUT;
 
 
 public class Api {

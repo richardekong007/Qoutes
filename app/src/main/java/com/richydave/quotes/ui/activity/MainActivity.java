@@ -1,4 +1,4 @@
-package com.richydave.qoutes.ui.activity;
+package com.richydave.quotes.ui.activity;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
@@ -11,11 +11,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
-import com.richydave.qoutes.R;
-import com.richydave.qoutes.ui.fragments.LocalQuotesFragment;
-import com.richydave.qoutes.ui.fragments.MakeQuoteFragment;
-import com.richydave.qoutes.ui.fragments.OnlineQuotesFragment;
-import com.richydave.qoutes.util.FragmentUtil;
+import com.richydave.quotes.R;
+import com.richydave.quotes.ui.fragments.LocalQuotesFragment;
+import com.richydave.quotes.ui.fragments.MakeQuoteFragment;
+import com.richydave.quotes.ui.fragments.OnlineQuotesFragment;
+import com.richydave.quotes.util.FragmentUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

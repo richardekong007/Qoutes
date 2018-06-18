@@ -1,4 +1,4 @@
-package com.richydave.qoutes.util;
+package com.richydave.quotes.util;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.richydave.qoutes.R;
+import com.richydave.quotes.R;
 
 public class FragmentUtil {
 

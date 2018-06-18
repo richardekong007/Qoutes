@@ -1,4 +1,4 @@
-package com.richydave.qoutes.ui.fragments;
+package com.richydave.quotes.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +13,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
-import com.richydave.qoutes.Constant;
-import com.richydave.qoutes.R;
-import com.richydave.qoutes.util.FragmentUtil;
+import com.richydave.quotes.Constant;
+import com.richydave.quotes.R;
+import com.richydave.quotes.util.FragmentUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +45,7 @@ public class ViewQuoteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_quote, container, false);
         ButterKnife.bind(this, view);
         init();
+        setRetainInstance(true);
         return view;
     }
 
@@ -65,16 +66,16 @@ public class ViewQuoteFragment extends Fragment {
 
     @OnClick(R.id.birth_place)
     public void onBirthPlaceClick() {
-        if (birthPlace != null && coordinates != null) {
-            Bundle argument = passBirthPlaceDetail();
-            FragmentUtil.replaceFragment(getFragmentManager(), new BirthPlaceFragment(), argument, true);
-        }
+        Bundle argument = passBirthPlaceDetail();
+        FragmentUtil.replaceFragment(getFragmentManager(), new BirthPlaceFragment(), argument, true);
     }
 
     private Bundle passBirthPlaceDetail() {
         Bundle birthPlaceBundle = new Bundle();
-        birthPlaceBundle.putString(Constant.BIRTH_PLACE, birthPlace);
-        birthPlaceBundle.putParcelable(Constant.LOCATION,coordinates);
+        if (birthPlace != null && coordinates != null) {
+            birthPlaceBundle.putString(Constant.BIRTH_PLACE, birthPlace);
+            birthPlaceBundle.putParcelable(Constant.LOCATION, coordinates);
+        }
         return birthPlaceBundle;
     }
 }
