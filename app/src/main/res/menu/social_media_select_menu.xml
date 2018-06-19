@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/facebook"
+        android:title="@string/facebook"
+        android:icon="@mipmap/facebook"/>
+
+    <item android:id="@+id/twitter"
+        android:title="@string/twitter"
+        android:icon="@mipmap/twitter"/>
+
+    <item android:id="@+id/instagram"
+        android:title="@string/instagram"
+        android:icon="@mipmap/instagram"/>
+
+</menu>

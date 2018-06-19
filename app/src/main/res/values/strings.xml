@@ -16,4 +16,7 @@
     <string name="online_quotes">Online Quotes</string>
     <string name="Camera">Camera</string>
     <string name="gallery">Gallery</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
 </resources>

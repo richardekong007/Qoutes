@@ -1,7 +1,6 @@
 package com.richydave.quotes.ui.fragments;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -61,7 +60,7 @@ public class MakeQuoteFragment extends Fragment {
 
     @OnClick(R.id.post)
     public void onPostClick() {
-
+        showSocialMediaMenu();
     }
 
     @OnClick(R.id.save)
@@ -99,6 +98,26 @@ public class MakeQuoteFragment extends Fragment {
 
     }
 
+    private void showSocialMediaMenu() {
+        PopupMenuBuilder socialMediaMenu = new PopupMenuBuilder(getContext(), post, R.menu.social_media_select_menu);
+        socialMediaMenu.getInstance()
+                .setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.facebook:
+                            makeFacebookPost();
+                            return true;
+                        case R.id.twitter:
+                            makeTwitterPost();
+                            return true;
+                        case R.id.instagram:
+                            makeInstaPost();
+                            return true;
+                        default:
+                            return false;
+                    }
+                });
+    }
+
     private void selectPhotoFromGallery() {
         Intent selectImage = new Intent();
         selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
@@ -109,5 +128,13 @@ public class MakeQuoteFragment extends Fragment {
     private void takePhoto() {
     }
 
+    private void makeFacebookPost() {
+    }
+
+    private void makeTwitterPost() {
+    }
+
+    private void makeInstaPost() {
+    }
 
 }
