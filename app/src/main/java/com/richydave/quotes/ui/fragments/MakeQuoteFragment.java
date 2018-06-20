@@ -1,8 +1,11 @@
 package com.richydave.quotes.ui.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.SwitchCompat;
@@ -15,11 +18,18 @@ import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
+import com.richydave.quotes.util.MediaUtil;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MakeQuoteFragment extends Fragment {
 
@@ -39,14 +49,18 @@ public class MakeQuoteFragment extends Fragment {
     @BindView(R.id.quote)
     EditText quoteInput;
 
+
     @BindView(R.id.post)
     AppCompatButton post;
 
     @BindView(R.id.save)
     AppCompatButton saveQuote;
 
+    private String imageFilePath;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_make_quote, container, false);
         ButterKnife.bind(this, view);
         setRetainInstance(true);
@@ -73,9 +87,8 @@ public class MakeQuoteFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.IMAGE_PICK_CODE && data != null) {
             Uri imageUri = data.getData();
-            Glide.with(getContext())
-                    .load(imageUri)
-                    .into(avatar);
+            imageFilePath = MediaUtil.resolveMediaPath(getActivity(), imageUri);
+            displayImageFromUri(imageUri);
         }
     }
 
@@ -104,13 +117,13 @@ public class MakeQuoteFragment extends Fragment {
                 .setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.facebook:
-                            makeFacebookPost();
+                            postQuoteToFacebook();
                             return true;
                         case R.id.twitter:
-                            makeTwitterPost();
+                            postQuoteToTwitter();
                             return true;
                         case R.id.instagram:
-                            makeInstaPost();
+                            postQuoteToInsta();
                             return true;
                         default:
                             return false;
@@ -119,22 +132,56 @@ public class MakeQuoteFragment extends Fragment {
     }
 
     private void selectPhotoFromGallery() {
-        Intent selectImage = new Intent();
-        selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
-        selectImage.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION), Constant.IMAGE_PICK_CODE);
+        if (MediaUtil.isPermissionGranted(getActivity())) {
+
+            Intent selectImage = new Intent();
+            selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
+            selectImage.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            selectImage.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION), Constant.IMAGE_PICK_CODE);
+        }
     }
+
+    private Bitmap getImageFromUri(Uri imageUri) {
+        //must be executed in background thread
+        Bitmap image = null;
+        ParcelFileDescriptor parcelFileDescriptor;
+        try {
+            parcelFileDescriptor = getContext().getContentResolver().openFileDescriptor(imageUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    private Observable<Bitmap> getImageObservable(Uri imageUri) {
+        return Observable.just(getImageFromUri(imageUri));
+    }
+
+    private void displayImageFromUri(Uri imageUri) {
+        getImageObservable(imageUri)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(image -> Glide.with(this)
+                                .load(image)
+                                .into(avatar),
+                        Throwable::printStackTrace);
+    }
+
 
     private void takePhoto() {
     }
 
-    private void makeFacebookPost() {
+    private void postQuoteToFacebook() {
     }
 
-    private void makeTwitterPost() {
+    private void postQuoteToTwitter() {
     }
 
-    private void makeInstaPost() {
+    private void postQuoteToInsta() {
     }
 
 }

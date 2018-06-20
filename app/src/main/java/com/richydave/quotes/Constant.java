@@ -4,36 +4,38 @@ import android.content.IntentSender;
 
 public interface Constant {
 
-    public static final String BASE_URL = "https://api.myjson.com/";
+    String BASE_URL = "https://api.myjson.com/";
 
 
-    public static final String PHOTO_URI = "PHOTO_URL";
+    String PHOTO_URI = "PHOTO_URL";
 
-    public static final String STATEMENT = "STATEMENT";
+    String STATEMENT = "STATEMENT";
 
-    public static final String BIRTH_PLACE = "BIRTH_PLACE";
+    String BIRTH_PLACE = "BIRTH_PLACE";
 
-    public static int REQUEST_TIMEOUT = 60;
+    int REQUEST_TIMEOUT = 60;
 
-    public static String ACCEPT = "Accept";
+    String ACCEPT = "Accept";
 
-    public static String JSON_APPLICATION = "application/json";
+    String JSON_APPLICATION = "application/json";
 
-    public static String CONTENT_TYPE = "content_type";
+    String CONTENT_TYPE = "content_type";
 
-    public static final String AUTHOR = "AUTHOR";
+    String AUTHOR = "AUTHOR";
 
-    public static final  String LOCATION = "LOCATION" ;
+    String LOCATION = "LOCATION";
 
-    public static final int ZOOM_LEVEL = 15;
+    int ZOOM_LEVEL = 15;
 
-    public static final int BEARING = 0;
+    int BEARING = 0;
 
-    public static final int TILT_ANGLE = 45;
-    
-    public static String IMAGE_CONTENT_TYPE = "image/*" ;
+    int TILT_ANGLE = 45;
 
-    public static  CharSequence SELECT_IMAGE_INSTRUCTION = "Select Image";
+    String IMAGE_CONTENT_TYPE = "image/*";
 
-    public static int IMAGE_PICK_CODE = 100;
+    CharSequence SELECT_IMAGE_INSTRUCTION = "Select Image";
+
+    int IMAGE_PICK_CODE = 100;
+
+    int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 101;
 }
