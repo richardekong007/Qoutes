@@ -1,7 +1,5 @@
 package com.richydave.quotes;
 
-import android.content.IntentSender;
-
 public interface Constant {
 
     String BASE_URL = "https://api.myjson.com/";
@@ -37,5 +35,11 @@ public interface Constant {
 
     int IMAGE_PICK_CODE = 100;
 
-    int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 101;
+    int REQUEST_IMAGE_CAPTURE = 101;
+
+    int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
+
+    String FILE_NAME_FORMAT = "yyyyMMdd_HHmmss";
+
+    String IMAGE_FILE_TYPE = ".jpg" ;
 }

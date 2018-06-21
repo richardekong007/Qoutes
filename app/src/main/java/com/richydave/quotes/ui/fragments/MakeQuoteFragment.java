@@ -1,18 +1,18 @@
 package com.richydave.quotes.ui.fragments;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
@@ -20,16 +20,16 @@ import com.richydave.quotes.R;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 import com.richydave.quotes.util.MediaUtil;
 
-import java.io.FileDescriptor;
+import java.io.File;
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.disposables.Disposable;
+
+import static android.app.Activity.RESULT_CANCELED;
 
 public class MakeQuoteFragment extends Fragment {
 
@@ -58,6 +58,8 @@ public class MakeQuoteFragment extends Fragment {
 
     private String imageFilePath;
 
+    private Disposable disposable = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 
@@ -65,6 +67,14 @@ public class MakeQuoteFragment extends Fragment {
         ButterKnife.bind(this, view);
         setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     @OnClick(R.id.author_avatar)
@@ -79,7 +89,6 @@ public class MakeQuoteFragment extends Fragment {
 
     @OnClick(R.id.save)
     public void onSaveClick() {
-
     }
 
     @Override
@@ -88,7 +97,14 @@ public class MakeQuoteFragment extends Fragment {
         if (requestCode == Constant.IMAGE_PICK_CODE && data != null) {
             Uri imageUri = data.getData();
             imageFilePath = MediaUtil.resolveMediaPath(getActivity(), imageUri);
-            displayImageFromUri(imageUri);
+            MediaUtil.displayImage(getActivity(), disposable, avatar, imageUri);
+        }
+        if (requestCode == Constant.REQUEST_IMAGE_CAPTURE) {
+
+            MediaUtil.displayImage(getActivity(), imageFilePath, avatar);
+
+        } else if (resultCode == RESULT_CANCELED) {
+            Toast.makeText(getActivity(), getString(R.string.camera_cancel), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -142,46 +158,31 @@ public class MakeQuoteFragment extends Fragment {
         }
     }
 
-    private Bitmap getImageFromUri(Uri imageUri) {
-        //must be executed in background thread
-        Bitmap image = null;
-        ParcelFileDescriptor parcelFileDescriptor;
-        try {
-            parcelFileDescriptor = getContext().getContentResolver().openFileDescriptor(imageUri, "r");
-            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-            image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-            parcelFileDescriptor.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return image;
-    }
-
-    private Observable<Bitmap> getImageObservable(Uri imageUri) {
-        return Observable.just(getImageFromUri(imageUri));
-    }
-
-    private void displayImageFromUri(Uri imageUri) {
-        getImageObservable(imageUri)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(image -> Glide.with(this)
-                                .load(image)
-                                .into(avatar),
-                        Throwable::printStackTrace);
-    }
-
-
     private void takePhoto() {
+        Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (captureImage.resolveActivity(getActivity().getPackageManager()) != null) {
+
+            File imageFile = null;
+            try {
+                imageFile = MediaUtil.createImageFile(getActivity());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (imageFile != null) {
+                Uri imageUri = FileProvider.getUriForFile(getActivity(), getString(R.string.authority), imageFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                imageFilePath = imageFile.getAbsolutePath();
+                startActivityForResult(captureImage, Constant.REQUEST_IMAGE_CAPTURE);
+            }
+        }
     }
 
     private void postQuoteToFacebook() {
     }
-
     private void postQuoteToTwitter() {
     }
 
     private void postQuoteToInsta() {
     }
-
 }

@@ -3,18 +3,37 @@ package com.richydave.quotes.util;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AlertDialog;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MediaUtil {
 
@@ -69,6 +88,14 @@ public class MediaUtil {
         return filePath;
     }
 
+    public static File createImageFile(Context context) throws IOException{
+        String timeStamp = new SimpleDateFormat(Constant.FILE_NAME_FORMAT, Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_"+timeStamp+"_";
+        File fileSystem =  context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(imageFileName, Constant.IMAGE_FILE_TYPE,fileSystem);
+        return imageFile;
+    }
+
     public static boolean isPermissionGranted(Context context) {
         if (BUILD_VERSION >= MASHMALLOW) {
             if (ContextCompat.checkSelfPermission(context,
@@ -109,6 +136,52 @@ public class MediaUtil {
                                 Constant.PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE));
         AlertDialog alert = alertBuilder.create();
         alert.show();
+    }
+
+    private static Bitmap getImageFromUri(Context context, Uri imageUri) {
+        //must be executed in background thread
+        Bitmap image = null;
+        ParcelFileDescriptor parcelFileDescriptor;
+        try {
+            parcelFileDescriptor = context.getContentResolver().openFileDescriptor(imageUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    public static void saveImageToGallery(Context context, File imageFile){
+
+        try{
+            MediaStore.Images.Media.insertImage(context.getContentResolver(), imageFile.getAbsolutePath(), imageFile.getName(), null);
+            Intent saveImageIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(imageFile));
+            context.sendBroadcast(saveImageIntent);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void displayImage(Context context, Disposable disposable, ImageView view, Uri imageUri) {
+        disposable = getBitmapObservable(context, imageUri)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bitmap -> Glide.with(context).load(bitmap).into(view)
+                        , throwable -> throwable.printStackTrace());
+    }
+
+    public static void displayImage(Context context, String imageFilePath, ImageView imageView){
+        File imageFile = new File(imageFilePath);
+        if (imageFile.exists()){
+            Glide.with(context).load(imageFile).into(imageView);
+        }
+    }
+
+    public static Observable<Bitmap> getBitmapObservable(Context context, Uri imageUri) {
+        return Observable.just(getImageFromUri(context, imageUri));
     }
 }
 
