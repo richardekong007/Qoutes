@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -40,10 +40,10 @@
 
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="LocalQuotes.db" />
+            android:value="LocalQuotes" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="1" />
+            android:value="4" />
 
         <activity android:name=".ui.activity.SplashScreen">
 

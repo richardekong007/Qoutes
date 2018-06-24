@@ -1,9 +1,9 @@
 package com.richydave.quotes;
 
+
 public interface Constant {
 
     String BASE_URL = "https://api.myjson.com/";
-
 
     String PHOTO_URI = "PHOTO_URL";
 
@@ -39,7 +39,11 @@ public interface Constant {
 
     int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
 
+    int REQUEST_PERMISSION_LOCATION = 103;
+
     String FILE_NAME_FORMAT = "yyyyMMdd_HHmmss";
 
-    String IMAGE_FILE_TYPE = ".jpg" ;
+    String IMAGE_FILE_TYPE = ".jpg";
+
+    String ADDRESS = "ADDRESS";
 }

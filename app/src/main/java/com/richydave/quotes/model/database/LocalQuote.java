@@ -8,7 +8,6 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -27,19 +26,23 @@ public class LocalQuote extends Model {
     @Column(name = "PHOTO_URL")
     public String photoUrl;
 
-    @Column(name = "QUOTE_PLACE")
-    public LatLng quotePlace;
+    @Column(name = "LATITUDE")
+    public double latitude;
+
+    @Column(name="LONGITUDE")
+    public double longitude;
 
 
     public static void saveQuoteRecord(@NonNull String authorName, @NonNull String statement, @NonNull String birthPlace,
-                                       @NonNull String photoUrl, @NonNull LatLng quotePlace) {
+                                       @NonNull String photoUrl, double latitude, double longitude) {
 
         LocalQuote localQuote = new LocalQuote();
         localQuote.authorName = authorName;
         localQuote.statement = statement;
         localQuote.birthPlace = birthPlace;
         localQuote.photoUrl = photoUrl;
-        localQuote.quotePlace = quotePlace;
+        localQuote.latitude = latitude;
+        localQuote.longitude = longitude;
         localQuote.save();
 
     }
@@ -48,7 +51,7 @@ public class LocalQuote extends Model {
         ActiveAndroid.beginTransaction();
         try {
             for (LocalQuote quote : quoteRecords) {
-                saveQuoteRecord(quote.authorName, quote.statement, quote.birthPlace, quote.photoUrl, quote.quotePlace);
+                saveQuoteRecord(quote.authorName, quote.statement, quote.birthPlace, quote.photoUrl, quote.latitude, quote.longitude);
             }
             ActiveAndroid.setTransactionSuccessful();
         } finally {
@@ -58,6 +61,10 @@ public class LocalQuote extends Model {
 
     public static List<LocalQuote> getQuoteRecords() {
         return new Select().from(LocalQuote.class).execute();
+    }
+
+    public static int getCount(){
+        return new Select().from(LocalQuote.class).count();
     }
 
 
@@ -71,5 +78,9 @@ public class LocalQuote extends Model {
 
     public static void deleteQuoteRecord(long id) {
         new Delete().from(LocalQuote.class).where("Id = ?", id).execute();
+    }
+
+    public static boolean isSave(int initialSize, int finalSize){
+        return initialSize < finalSize;
     }
 }

@@ -1,6 +1,8 @@
 package com.richydave.quotes.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,16 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
+import com.richydave.quotes.model.database.LocalQuote;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
+import com.richydave.quotes.util.LocationUtil;
 import com.richydave.quotes.util.MediaUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +49,9 @@ public class MakeQuoteFragment extends Fragment {
     @BindView(R.id.last_name)
     EditText lastName;
 
+    @BindView(R.id.birth_place)
+    EditText birthPlace;
+
     @BindView(R.id.location_switch)
     SwitchCompat locationSwitch;
 
@@ -60,10 +69,20 @@ public class MakeQuoteFragment extends Fragment {
 
     private Disposable disposable = null;
 
+    private LocationManager locationManager;
+
+    private double latitude;
+
+    private double longitude;
+
+    private String address;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_make_quote, container, false);
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationUtil.requestLocationUpdate(getActivity(), locationManager);
         ButterKnife.bind(this, view);
         setRetainInstance(true);
         return view;
@@ -82,6 +101,18 @@ public class MakeQuoteFragment extends Fragment {
         showPictureMenu();
     }
 
+    @OnClick(R.id.location_switch)
+    public void onLocationSwitch() {
+
+        if (locationSwitch.isChecked()) {
+            latitude = LocationUtil.getLattitude();
+            longitude = LocationUtil.getLongitude();
+
+        } else {
+            LocationUtil.stopLocationUpdate(locationManager);
+        }
+    }
+
     @OnClick(R.id.post)
     public void onPostClick() {
         showSocialMediaMenu();
@@ -89,6 +120,25 @@ public class MakeQuoteFragment extends Fragment {
 
     @OnClick(R.id.save)
     public void onSaveClick() {
+        if (locationSwitch.isChecked() && editTextNotEmpty(firstName, lastName, birthPlace, quoteInput)) {
+
+            String authorName = String.format(getString(R.string.author_name_format), firstName.getText().toString(), lastName.getText().toString());
+            String bPlace = birthPlace.getText().toString();
+            String statement = quoteInput.getText().toString();
+            double latitude = LocationUtil.getLattitude();
+            double longitude = LocationUtil.getLongitude();
+
+            int actualSize = LocalQuote.getCount();
+            LocalQuote.saveQuoteRecord(authorName, statement, bPlace, imageFilePath, latitude, longitude);
+
+            if (LocalQuote.isSave(actualSize, LocalQuote.getCount())) {
+                Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
+                clear(firstName, lastName, birthPlace, quoteInput, locationSwitch, avatar);
+            } else {
+                Toast.makeText(getActivity(), R.string.not_saved, Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
     @Override
@@ -154,7 +204,8 @@ public class MakeQuoteFragment extends Fragment {
             selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
             selectImage.setAction(Intent.ACTION_OPEN_DOCUMENT);
             selectImage.addCategory(Intent.CATEGORY_OPENABLE);
-            startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION), Constant.IMAGE_PICK_CODE);
+            startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION),
+                    Constant.IMAGE_PICK_CODE);
         }
     }
 
@@ -178,8 +229,35 @@ public class MakeQuoteFragment extends Fragment {
         }
     }
 
+    private boolean editTextNotEmpty(EditText... editTexts) {
+        for (EditText editText : editTexts) {
+            if (editText == null) {
+                return false;
+            } else if (editText.getText().length() < 2) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void clear(View... views) {
+
+        for (View view : views) {
+            if (view instanceof SwitchCompat) {
+                ((SwitchCompat) view).setChecked(false);
+            } else if (view instanceof EditText) {
+                ((EditText) view).setText("");
+            } else if (view instanceof ImageView) {
+                Glide.with(this)
+                        .load(R.drawable.ic_launcher_background)
+                        .into((ImageView) view);
+            }
+        }
+    }
+
     private void postQuoteToFacebook() {
     }
+
     private void postQuoteToTwitter() {
     }
 
