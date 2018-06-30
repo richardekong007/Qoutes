@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import static com.richydave.quotes.Constant.MIN_LOCATION_UPDATE_TIME;
 
 
 public class LocationUtil {
@@ -62,7 +63,7 @@ public class LocationUtil {
                 ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET}, 104);
                 return;
             }
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_LOCATION_UPDATE_TIME, 0, locationListener);
         }
     }
 
@@ -70,7 +71,7 @@ public class LocationUtil {
         locationManager.removeUpdates(locationListener);
     }
 
-    public static double getLattitude(){
+    public static double getLatitude(){
         return lattitude;
     }
 

@@ -8,7 +8,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
-import com.richydave.quotes.ui.AlertDialogs.ErrorAlertDialog;
+import com.richydave.quotes.ui.Dialogs.ErrorDialog;
 
 import java.util.regex.Pattern;
 
@@ -64,7 +64,7 @@ public class UserCredential extends Model {
             if (doesUserNameExist(context, username)) {
                 String title = context.getString(R.string.signup_conflict_error);
                 String message = context.getString(R.string.signup_conflict_error_message);
-                new ErrorAlertDialog(context, title, message).build()
+                new ErrorDialog(context, title, message).build()
                         .setPositiveButton(context.getString(R.string.close),
                                 ((dialog, which) -> dialog.dismiss()))
                         .show();
@@ -97,7 +97,7 @@ public class UserCredential extends Model {
                     if (!containsDigit) {
                         validationTitle = context.getString(R.string.password_error);
                         validationMessage = context.getString(R.string.weak_password_message);
-                        new ErrorAlertDialog(context, validationTitle, validationMessage)
+                        new ErrorDialog(context, validationTitle, validationMessage)
                                 .build().setPositiveButton(context.getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                                 .show();
                         return false;
@@ -107,14 +107,14 @@ public class UserCredential extends Model {
                 } else {
                     validationTitle = context.getString(R.string.password_error);
                     validationMessage = context.getString(R.string.weak_username_password);
-                    new ErrorAlertDialog(context, validationTitle, validationMessage)
+                    new ErrorDialog(context, validationTitle, validationMessage)
                             .build().setPositiveButton(context.getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                             .show();
                 }
             } else {
                 validationTitle = context.getString(R.string.signup_error);
                 validationMessage = context.getString(R.string.empty_user_credential);
-                new ErrorAlertDialog(context, validationTitle, validationMessage)
+                new ErrorDialog(context, validationTitle, validationMessage)
                         .build().setPositiveButton(context.getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();
             }

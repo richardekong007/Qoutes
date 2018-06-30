@@ -1,11 +1,10 @@
-package com.richydave.quotes.ui.AlertDialogs;
+package com.richydave.quotes.ui.Dialogs;
 
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
 
 
-abstract class BaseAlertDialog {
+abstract class BaseDialog {
 
     private Context context;
 
@@ -13,7 +12,7 @@ abstract class BaseAlertDialog {
 
     private String message;
 
-    public BaseAlertDialog(Context context, String tittle, String message) {
+    public BaseDialog(Context context, String tittle, String message) {
         this.context = context;
         this.tittle = tittle;
         this.message = message;

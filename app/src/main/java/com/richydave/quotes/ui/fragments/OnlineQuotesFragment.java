@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import com.google.android.gms.maps.model.LatLng;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
-import com.richydave.quotes.adapter.QuoteRecordsAdapter;
+import com.richydave.quotes.adapter.OnlineQuoteAdapter;
 import com.richydave.quotes.model.Quote;
 import com.richydave.quotes.network.Api;
 import com.richydave.quotes.util.FragmentUtil;
@@ -31,9 +31,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapter.ViewQuoteClickListener {
+public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter.ViewQuoteClickListener {
 
-    private QuoteRecordsAdapter adapter;
+    private OnlineQuoteAdapter adapter;
 
     private CompositeDisposable disposable = new CompositeDisposable();
 
@@ -76,7 +76,7 @@ public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapte
 
     private void init() {
         //set up adapter
-        adapter = new QuoteRecordsAdapter(onlineQuotes);
+        adapter = new OnlineQuoteAdapter(onlineQuotes);
         adapter.setViewQuoteClickListener(this);
         // set up recyclerView
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

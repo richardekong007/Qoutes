@@ -60,4 +60,6 @@ public interface Constant {
     String COLUMN_PASSWORD = "PASSWORD";
 
     long LOAD_TIME = 3000;
+
+    long MIN_LOCATION_UPDATE_TIME = 5000;
 }

@@ -1,15 +1,15 @@
-package com.richydave.quotes.ui.AlertDialogs;
+package com.richydave.quotes.ui.Dialogs;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
 import com.richydave.quotes.R;
 
-public class WaringAlertDialog extends BaseAlertDialog {
+public class QuestionDialog extends BaseDialog {
 
-    private static final int ICON = R.drawable.ic_warning;
+    private static final int ICON = R.drawable.ic_confirm;
 
-    public WaringAlertDialog(Context context, String tittle, String message) {
+    public QuestionDialog(Context context, String tittle, String message) {
         super(context, tittle, message);
     }
 

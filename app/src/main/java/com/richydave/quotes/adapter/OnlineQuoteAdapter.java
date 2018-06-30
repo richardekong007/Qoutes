@@ -18,13 +18,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class QuoteRecordsAdapter extends RecyclerView.Adapter<QuoteRecordsAdapter.QuoteRecordViewHolder> {
+public class OnlineQuoteAdapter extends RecyclerView.Adapter<OnlineQuoteAdapter.QuoteRecordViewHolder> {
 
     private List<Quote> quoteRecords;
 
     private ViewQuoteClickListener viewQuoteClickListener;
 
-    public QuoteRecordsAdapter(List<Quote> quoteRecords) {
+    public OnlineQuoteAdapter(List<Quote> quoteRecords) {
         this.quoteRecords = quoteRecords;
     }
 

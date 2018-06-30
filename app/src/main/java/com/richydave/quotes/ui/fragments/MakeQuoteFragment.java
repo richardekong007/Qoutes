@@ -21,15 +21,14 @@ import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
 import com.richydave.quotes.model.database.LocalQuote;
-import com.richydave.quotes.ui.AlertDialogs.ErrorAlertDialog;
-import com.richydave.quotes.ui.AlertDialogs.InformationDialog;
+import com.richydave.quotes.ui.Dialogs.ErrorDialog;
+import com.richydave.quotes.ui.Dialogs.InformationDialog;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 import com.richydave.quotes.util.LocationUtil;
 import com.richydave.quotes.util.MediaUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,7 +106,7 @@ public class MakeQuoteFragment extends Fragment {
     public void onLocationSwitch() {
 
         if (locationSwitch.isChecked()) {
-            latitude = LocationUtil.getLattitude();
+            latitude = LocationUtil.getLatitude();
             longitude = LocationUtil.getLongitude();
 
         } else {
@@ -127,7 +126,7 @@ public class MakeQuoteFragment extends Fragment {
             String authorName = String.format(getString(R.string.author_name_format), firstName.getText().toString(), lastName.getText().toString());
             String bPlace = birthPlace.getText().toString();
             String statement = quoteInput.getText().toString();
-            double latitude = LocationUtil.getLattitude();
+            double latitude = LocationUtil.getLatitude();
             double longitude = LocationUtil.getLongitude();
 
             LocalQuote.saveQuoteRecord(authorName, statement, bPlace, imageFilePath, latitude, longitude);
@@ -141,7 +140,7 @@ public class MakeQuoteFragment extends Fragment {
             } else {
                 String errorMessage = getString(R.string.not_saved);
                 String errorTitle = getString(R.string.error);
-                new ErrorAlertDialog(getActivity(), errorTitle, errorMessage)
+                new ErrorDialog(getActivity(), errorTitle, errorMessage)
                         .build()
                         .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();

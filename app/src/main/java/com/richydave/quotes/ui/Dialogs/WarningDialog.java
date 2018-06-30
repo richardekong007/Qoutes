@@ -1,16 +1,16 @@
-package com.richydave.quotes.ui.AlertDialogs;
+package com.richydave.quotes.ui.Dialogs;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
 import com.richydave.quotes.R;
 
-public class ErrorAlertDialog extends BaseAlertDialog {
+public class WarningDialog extends BaseDialog {
 
-    private static final int ICON = R.drawable.ic_error;
+    private static final int ICON = R.drawable.ic_warning;
 
-    public ErrorAlertDialog(Context context, String title, String message) {
-        super(context,title,message);
+    public WarningDialog(Context context, String tittle, String message) {
+        super(context, tittle, message);
     }
 
     @Override

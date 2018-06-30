@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
 import com.richydave.quotes.model.database.UserCredential;
-import com.richydave.quotes.ui.AlertDialogs.ErrorAlertDialog;
-import com.richydave.quotes.ui.AlertDialogs.InformationDialog;
+import com.richydave.quotes.ui.Dialogs.ErrorDialog;
+import com.richydave.quotes.ui.Dialogs.InformationDialog;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 import com.richydave.quotes.util.MediaUtil;
 
@@ -91,17 +91,17 @@ public class LoginActivity extends AppCompatActivity {
             if (doesUserNameExist && doesPasswordExist) {
                 viewOnlineQuotes(name);
             } else {
-                new ErrorAlertDialog(this, getString(R.string.login_error), getString(R.string.wrong_user))
+                new ErrorDialog(this, getString(R.string.login_error), getString(R.string.wrong_user))
                         .build().setPositiveButton(getString(R.string.close), (dialog, which) -> dialog.dismiss())
                         .show();
             }
         } catch (NullPointerException e) {
             if (name.equals("") || pwd.equals("")) {
-                new ErrorAlertDialog(this, getString(R.string.login_error), getString(R.string.empty_user_credential))
+                new ErrorDialog(this, getString(R.string.login_error), getString(R.string.empty_user_credential))
                         .build().setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();
             } else {
-                new ErrorAlertDialog(this, getString(R.string.login_error), getString(R.string.login_error_message))
+                new ErrorDialog(this, getString(R.string.login_error), getString(R.string.login_error_message))
                         .build().setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();
             }
