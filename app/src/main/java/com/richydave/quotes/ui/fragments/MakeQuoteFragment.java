@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
 import com.richydave.quotes.model.database.LocalQuote;
+import com.richydave.quotes.ui.AlertDialogs.ErrorAlertDialog;
+import com.richydave.quotes.ui.AlertDialogs.InformationDialog;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 import com.richydave.quotes.util.LocationUtil;
 import com.richydave.quotes.util.MediaUtil;
@@ -71,11 +73,11 @@ public class MakeQuoteFragment extends Fragment {
 
     private LocationManager locationManager;
 
-    private double latitude;
+    protected double latitude;
 
-    private double longitude;
+    protected double longitude;
 
-    private String address;
+    protected String address;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
@@ -128,14 +130,22 @@ public class MakeQuoteFragment extends Fragment {
             double latitude = LocationUtil.getLattitude();
             double longitude = LocationUtil.getLongitude();
 
-            int actualSize = LocalQuote.getCount();
             LocalQuote.saveQuoteRecord(authorName, statement, bPlace, imageFilePath, latitude, longitude);
 
-            if (LocalQuote.isSave(actualSize, LocalQuote.getCount())) {
-                Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_LONG).show();
+            if (LocalQuote.isSave()) {
+                new InformationDialog(getActivity(), getString(R.string.quote_creation_title), getString(R.string.quote_success_mesaage))
+                        .build().setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                        .show();
+
                 clear(firstName, lastName, birthPlace, quoteInput, locationSwitch, avatar);
             } else {
-                Toast.makeText(getActivity(), R.string.not_saved, Toast.LENGTH_LONG).show();
+                String errorMessage = getString(R.string.not_saved);
+                String errorTitle = getString(R.string.error);
+                new ErrorAlertDialog(getActivity(), errorTitle, errorMessage)
+                        .build()
+                        .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
+                        .show();
+
             }
 
         }
@@ -249,7 +259,7 @@ public class MakeQuoteFragment extends Fragment {
                 ((EditText) view).setText("");
             } else if (view instanceof ImageView) {
                 Glide.with(this)
-                        .load(R.drawable.ic_launcher_background)
+                        .load(R.drawable.ic_account)
                         .into((ImageView) view);
             }
         }

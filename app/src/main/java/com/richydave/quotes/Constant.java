@@ -46,4 +46,18 @@ public interface Constant {
     String IMAGE_FILE_TYPE = ".jpg";
 
     String ADDRESS = "ADDRESS";
+
+    String LATTITUDE = "LATITUDE";
+
+    String LONGITUDE = "LONGITUDE";
+
+    String USERNAME = "USERNAME";
+
+    String TABLE_USER_CREDENTIALS = "USER_CREDENTIALS";
+
+    String COLUMN_USERNAME = "USERNAME" ;
+
+    String COLUMN_PASSWORD = "PASSWORD";
+
+    long LOAD_TIME = 3000;
 }

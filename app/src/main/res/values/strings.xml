@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Qoutes</string>
+    <string name="app_name">Quotes</string>
     <string name="author_item_button_text">View Quote</string>
     <string name="Quote">Quote:</string>
     <string name="birth_place_button_text">Birth Place</string>
@@ -11,7 +11,7 @@
     <string name="last_name_hint">Last Name</string>
     <string name="menu_make_quote">Make Quote</string>
     <string name="local_quotes">Local Quotes</string>
-    <string name="menu_exit">Exit</string>
+    <string name="menu_logoutt">Log out</string>
     <string name="sample_profile_text">Sample Name</string>
     <string name="online_quotes">Online Quotes</string>
     <string name="Camera">Camera</string>
@@ -31,4 +31,28 @@
     <string name="author_name_format">%s %s</string>
     <string name="saved">Saved!</string>
     <string name="not_saved">Not saved!</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_up_error_message">Ensure your username is more than 1 character  and password length is more than 6 character.</string>
+    <string name="close">Close</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="weak_password_message">Password must contain digit(s)</string>
+    <string name="password_error">Password Error</string>
+    <string name="number_pattern">\\d+</string>
+    <string name="weak_username_password">User name and password length must be more than 6 characters</string>
+    <string name="error">Error</string>
+    <string name="login_error_message">Username or Password does not exist</string>
+    <string name="login_error">Login Error</string>
+    <string name="signup_success_message">Account created</string>
+    <string name="signup_success">SignUp  Message</string>
+    <string name="signup_error">Invalid Credentials</string>
+    <string name="signup_conflict_error_message">User already exists</string>
+    <string name="signup_conflict_error">User Credential Conflict</string>
+    <string name="empty_user_credential">Provide username and password</string>
+    <string name="wrong_user">Wrong user credentials</string>
+    <string name="quote_creation_title">Quote Creation</string>
+    <string name="quote_success_mesaage">Quote saved successfully!</string>
 </resources>

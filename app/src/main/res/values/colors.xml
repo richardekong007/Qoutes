@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="teal_green">#006d5b</color>
+    <color name="error_red">#FF0A11</color>
+    <color name="warning">#FFD011</color>
 </resources>

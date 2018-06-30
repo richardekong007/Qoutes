@@ -68,7 +68,7 @@ public class OnlineQuotesFragment extends Fragment implements QuoteRecordsAdapte
         args.putString(Constant.PHOTO_URI, quote.getPhotoUrl());
         args.putString(Constant.AUTHOR, quote.getAuthorName());
         args.putString(Constant.STATEMENT, quote.getStatement());
-        args.putString(Constant.BIRTH_PLACE,quote.getBirthPlace());
+        args.putString(Constant.BIRTH_PLACE, quote.getBirthPlace());
         args.putParcelable(Constant.LOCATION, quote.getLocation());
 
         FragmentUtil.replaceFragment(getFragmentManager(), new ViewQuoteFragment(), args, true);

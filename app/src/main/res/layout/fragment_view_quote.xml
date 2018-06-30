@@ -13,7 +13,8 @@
             android:id="@+id/avatar"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
-            android:layout_gravity="top|end"/>
+            android:layout_gravity="top|end"
+            android:background="@drawable/ic_account"/>
 
         <TextView
             android:id="@+id/author_name"

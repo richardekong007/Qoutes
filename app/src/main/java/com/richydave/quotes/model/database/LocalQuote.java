@@ -32,6 +32,8 @@ public class LocalQuote extends Model {
     @Column(name="LONGITUDE")
     public double longitude;
 
+    private static int initialSize;
+
 
     public static void saveQuoteRecord(@NonNull String authorName, @NonNull String statement, @NonNull String birthPlace,
                                        @NonNull String photoUrl, double latitude, double longitude) {
@@ -43,6 +45,7 @@ public class LocalQuote extends Model {
         localQuote.photoUrl = photoUrl;
         localQuote.latitude = latitude;
         localQuote.longitude = longitude;
+        initialSize = getCount();
         localQuote.save();
 
     }
@@ -64,7 +67,7 @@ public class LocalQuote extends Model {
     }
 
     public static int getCount(){
-        return new Select().from(LocalQuote.class).count();
+        return new Select().from(LocalQuote.class).execute().size();
     }
 
 
@@ -80,7 +83,7 @@ public class LocalQuote extends Model {
         new Delete().from(LocalQuote.class).where("Id = ?", id).execute();
     }
 
-    public static boolean isSave(int initialSize, int finalSize){
-        return initialSize < finalSize;
+    public static boolean isSave(){
+        return initialSize < getCount();
     }
 }
