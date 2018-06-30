@@ -55,4 +55,6 @@
     <string name="wrong_user">Wrong user credentials</string>
     <string name="quote_creation_title">Quote Creation</string>
     <string name="quote_success_mesaage">Quote saved successfully!</string>
+    <string name="network_error">Network Error</string>
+    <string name="network_error_message">Unable to resolve host address.Establish internet connectivity,  but contact your network administrator if the problem persists</string>
 </resources>

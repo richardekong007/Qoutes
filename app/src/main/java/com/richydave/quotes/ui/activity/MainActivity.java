@@ -118,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
                         drawer.closeDrawers();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        //FragmentUtil.replaceFragment(getSupportFragmentManager(), new LoginActivity(), null, false);
-                        //System.exit(0);
                         return true;
                 }
 

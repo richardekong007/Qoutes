@@ -1,5 +1,6 @@
 package com.richydave.quotes.ui.fragments;
 
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ import com.richydave.quotes.R;
 import com.richydave.quotes.adapter.OnlineQuoteAdapter;
 import com.richydave.quotes.model.Quote;
 import com.richydave.quotes.network.Api;
+import com.richydave.quotes.ui.Dialogs.ErrorDialog;
+import com.richydave.quotes.ui.activity.LoginActivity;
+import com.richydave.quotes.ui.activity.MainActivity;
 import com.richydave.quotes.util.FragmentUtil;
 
 import java.io.IOException;
@@ -108,10 +112,18 @@ public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter
                         onlineQuotes.addAll(quotes);
                         adapter.notifyDataSetChanged();
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         setLoading(false);
+                        new ErrorDialog(getActivity(), getString(R.string.network_error), getString(R.string.network_error_message))
+                                .build()
+                                .setPositiveButton(getString(R.string.close), ((dialog, which) -> {
+                                    FragmentUtil.takeOffBackStack(getFragmentManager(), OnlineQuotesFragment.this);
+                                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                                    dialog.dismiss();
+                                }))
+                                .show();
+
                         e.printStackTrace();
                     }
                 }));

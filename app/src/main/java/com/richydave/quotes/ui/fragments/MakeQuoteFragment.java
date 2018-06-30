@@ -133,7 +133,8 @@ public class MakeQuoteFragment extends Fragment {
 
             if (LocalQuote.isSave()) {
                 new InformationDialog(getActivity(), getString(R.string.quote_creation_title), getString(R.string.quote_success_mesaage))
-                        .build().setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                        .build()
+                        .setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
                         .show();
 
                 clear(firstName, lastName, birthPlace, quoteInput, locationSwitch, avatar);

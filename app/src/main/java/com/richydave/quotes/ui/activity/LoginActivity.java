@@ -92,17 +92,20 @@ public class LoginActivity extends AppCompatActivity {
                 viewOnlineQuotes(name);
             } else {
                 new ErrorDialog(this, getString(R.string.login_error), getString(R.string.wrong_user))
-                        .build().setPositiveButton(getString(R.string.close), (dialog, which) -> dialog.dismiss())
+                        .build()
+                        .setPositiveButton(getString(R.string.close), (dialog, which) -> dialog.dismiss())
                         .show();
             }
         } catch (NullPointerException e) {
             if (name.equals("") || pwd.equals("")) {
                 new ErrorDialog(this, getString(R.string.login_error), getString(R.string.empty_user_credential))
-                        .build().setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
+                        .build()
+                        .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();
             } else {
                 new ErrorDialog(this, getString(R.string.login_error), getString(R.string.login_error_message))
-                        .build().setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
+                        .build()
+                        .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();
             }
         }
@@ -120,7 +123,8 @@ public class LoginActivity extends AppCompatActivity {
             if (UserCredential.wasSave()) {
                 viewOnlineQuotes(name);
                 new InformationDialog(this, getString(R.string.signup_success), getString(R.string.signup_success_message))
-                        .build().setPositiveButton(getString(R.string.ok), ((dialog, which) -> dialog.dismiss()))
+                        .build()
+                        .setPositiveButton(getString(R.string.ok), ((dialog, which) -> dialog.dismiss()))
                         .show();
             }
         }
