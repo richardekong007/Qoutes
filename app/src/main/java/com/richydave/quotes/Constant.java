@@ -55,11 +55,14 @@ public interface Constant {
 
     String TABLE_USER_CREDENTIALS = "USER_CREDENTIALS";
 
-    String COLUMN_USERNAME = "USERNAME" ;
+    String COLUMN_USERNAME = "USERNAME";
+
+    String COLUMN_PHOTO_URI = "PHOTO_URI";
 
     String COLUMN_PASSWORD = "PASSWORD";
 
     long LOAD_TIME = 3000;
 
     long MIN_LOCATION_UPDATE_TIME = 5000;
+
 }

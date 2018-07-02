@@ -7,7 +7,7 @@
             android:icon="@drawable/ic_quote"
             android:title="@string/menu_make_quote"/>
         <item
-            android:id="@+id/view_saved_quotes"
+            android:id="@+id/view_local_quotes"
             android:icon="@drawable/ic_sd_storage"
             android:title="@string/local_quotes"/>
         <item

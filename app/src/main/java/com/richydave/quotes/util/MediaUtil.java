@@ -17,11 +17,15 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatImageView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
+import com.richydave.quotes.R;
+import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -88,11 +92,11 @@ public class MediaUtil {
         return filePath;
     }
 
-    public static File createImageFile(Context context) throws IOException{
+    public static File createImageFile(Context context) throws IOException {
         String timeStamp = new SimpleDateFormat(Constant.FILE_NAME_FORMAT, Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_"+timeStamp+"_";
-        File fileSystem =  context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File imageFile = File.createTempFile(imageFileName, Constant.IMAGE_FILE_TYPE,fileSystem);
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File fileSystem = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(imageFileName, Constant.IMAGE_FILE_TYPE, fileSystem);
         return imageFile;
     }
 
@@ -153,13 +157,13 @@ public class MediaUtil {
         return image;
     }
 
-    public static void saveImageToGallery(Context context, File imageFile){
+    public static void saveImageToGallery(Context context, File imageFile) {
 
-        try{
+        try {
             MediaStore.Images.Media.insertImage(context.getContentResolver(), imageFile.getAbsolutePath(), imageFile.getName(), null);
-            Intent saveImageIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(imageFile));
+            Intent saveImageIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile));
             context.sendBroadcast(saveImageIntent);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -173,11 +177,64 @@ public class MediaUtil {
                         , throwable -> throwable.printStackTrace());
     }
 
-    public static void displayImage(Context context, String imageFilePath, ImageView imageView){
+    public static void displayImage(Context context, String imageFilePath, ImageView imageView) {
         File imageFile = new File(imageFilePath);
-        if (imageFile.exists()){
+        if (imageFile.exists()) {
             Glide.with(context).load(imageFile).into(imageView);
         }
+    }
+
+    public static String takePhoto(Context context) {
+        Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String imageFilePath = null;
+        if (captureImage.resolveActivity(context.getPackageManager()) != null) {
+
+            File imageFile = null;
+            try {
+                imageFile = MediaUtil.createImageFile(context);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (imageFile != null) {
+                Uri imageUri = FileProvider.getUriForFile(context, context.getString(R.string.authority), imageFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                imageFilePath = imageFile.getAbsolutePath();
+                ((Activity) context).startActivityForResult(captureImage, Constant.REQUEST_IMAGE_CAPTURE);
+            }
+        }
+        return imageFilePath;
+    }
+
+    public static  void selectPhotoFromGallery(Context context) {
+        if (MediaUtil.isPermissionGranted(context)) {
+
+            Intent selectImage = new Intent();
+            selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
+            selectImage.setAction(Intent.ACTION_OPEN_DOCUMENT);
+            selectImage.addCategory(Intent.CATEGORY_OPENABLE);
+            ((Activity)context).startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION),
+                    Constant.IMAGE_PICK_CODE);
+        }
+    }
+
+    public static void showPictureMenu(Context context, ImageView avatar) {
+
+        PopupMenuBuilder popupMenu = new PopupMenuBuilder(context, avatar, R.menu.picture_select_menu);
+        popupMenu.getInstance()
+                .setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.camera:
+                            takePhoto(context);
+                            return true;
+                        case R.id.gallery:
+                            selectPhotoFromGallery(context);
+                            return true;
+                        default:
+                            return false;
+                    }
+                });
+
     }
 
     public static Observable<Bitmap> getBitmapObservable(Context context, Uri imageUri) {

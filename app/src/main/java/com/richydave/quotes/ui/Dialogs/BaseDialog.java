@@ -1,5 +1,6 @@
 package com.richydave.quotes.ui.Dialogs;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.content.Context;
 
@@ -27,7 +28,7 @@ abstract class BaseDialog {
         return message;
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return context;
     }
 

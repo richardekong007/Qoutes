@@ -31,6 +31,7 @@ public class LocalQuotesFragment extends Fragment implements LocalQuoteAdapter.V
     @BindView(R.id.progress_indicator)
     ProgressBar progressIndicator;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.fragment_local_records, container, false);
         ButterKnife.bind(this, view);
@@ -44,10 +45,10 @@ public class LocalQuotesFragment extends Fragment implements LocalQuoteAdapter.V
         Bundle args = new Bundle();
         if (quote != null) {
 
-            LatLng location = new LatLng(quote.latitude, quote.longitude);
-            args.putString(Constant.PHOTO_URI, quote.photoUrl);
-            args.putString(Constant.AUTHOR, quote.authorName);
-            args.putString(Constant.STATEMENT, quote.statement);
+            LatLng location = new LatLng(quote.getLatitude(), quote.getLongitude());
+            args.putString(Constant.PHOTO_URI, quote.getPhotoUrl());
+            args.putString(Constant.AUTHOR, quote.getAuthorName());
+            args.putString(Constant.STATEMENT, quote.getStatement());
             args.putParcelable(Constant.LOCATION, location);
         }
 

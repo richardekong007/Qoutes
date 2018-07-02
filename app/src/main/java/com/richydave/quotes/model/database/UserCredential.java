@@ -6,10 +6,12 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.activeandroid.query.Update;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
 import com.richydave.quotes.ui.Dialogs.ErrorDialog;
 
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 @Table(name = Constant.TABLE_USER_CREDENTIALS)
@@ -17,11 +19,14 @@ import java.util.regex.Pattern;
 public class UserCredential extends Model {
 
     @Column(name = Constant.COLUMN_USERNAME, unique = true)
-    public String userName;
+    private String userName;
+
+    @Column(name = Constant.COLUMN_PHOTO_URI)
+    private String photoUri;
 
     //no encryption
     @Column(name = Constant.COLUMN_PASSWORD)
-    public String password;
+    private String password;
 
     private static int initialSize;
 
@@ -31,7 +36,7 @@ public class UserCredential extends Model {
                 .count();
     }
 
-    public static boolean doesUserNameExist(Context context, String username) {
+    public static boolean userNameExist(Context context, String username) {
         try {
             UserCredential userCredential = new Select().from(UserCredential.class)
                     .where("USERNAME = ?", username).executeSingle();
@@ -41,7 +46,7 @@ public class UserCredential extends Model {
         }
     }
 
-    public static boolean doesPasswordExist(Context context, String username) {
+    public static boolean passwordExist(Context context, String username) {
         try {
             UserCredential userCredential = new Select()
                     .from(UserCredential.class)
@@ -53,15 +58,30 @@ public class UserCredential extends Model {
         }
     }
 
-    public static void saveUserCredential(Context context, String username, String password) {
+    public static void updateUserCredential(String userName, String... columns) {
+        Update updateStatement = new Update(UserCredential.class);
+        try {
+            for (String column : columns) {
+                updateStatement.set(column)
+                        .where(Constant.COLUMN_USERNAME + "=?", userName)
+                        .execute();
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveUserCredential(Context context, String username, String photoUrl, String password) {
 
         UserCredential userCredential = new UserCredential();
         if (username != null && password != null) {
             userCredential.userName = username;
+            userCredential.photoUri = photoUrl;
             userCredential.password = password;
             initialSize = getCount();
             //do not save user credential if  username exists in the database
-            if (doesUserNameExist(context, username)) {
+            if (userNameExist(context, username)) {
                 String title = context.getString(R.string.signup_conflict_error);
                 String message = context.getString(R.string.signup_conflict_error_message);
                 new ErrorDialog(context, title, message).build()
@@ -72,6 +92,21 @@ public class UserCredential extends Model {
                 userCredential.save();
             }
         }
+    }
+
+    public static String getPhotoUri(Context context, String userName) {
+        String photoUri = null;
+        try {
+            if (userNameExist(context, userName)) {
+                UserCredential userCredential = new Select().from(UserCredential.class)
+                        .where(Constant.USERNAME + "=?", userName).executeSingle();
+                photoUri = userCredential.photoUri;
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return photoUri;
     }
 
     public static boolean wasSave() {
@@ -121,5 +156,4 @@ public class UserCredential extends Model {
         }
         return false;
     }
-
 }

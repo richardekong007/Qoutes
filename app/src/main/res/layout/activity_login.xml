@@ -17,23 +17,23 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/ic_account"/>
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/username"
-            style="@style/textInputStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_account"
             android:layout_margin="@dimen/margin_extra_large"
+            style="@style/textInputStyle"
             android:hint="@string/user_name" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/password"
-            style="@style/textInputStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_extra_large"
             android:drawableEnd="@drawable/ic_security"
             android:hint="@string/password"
+            style="@style/textInputStyle"
             android:inputType="textPassword" />
 
         <LinearLayout

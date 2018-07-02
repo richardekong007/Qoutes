@@ -29,6 +29,8 @@ import com.richydave.quotes.util.MediaUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +61,6 @@ public class MakeQuoteFragment extends Fragment {
     @BindView(R.id.quote)
     EditText quoteInput;
 
-
     @BindView(R.id.post)
     AppCompatButton post;
 
@@ -85,6 +86,7 @@ public class MakeQuoteFragment extends Fragment {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         LocationUtil.requestLocationUpdate(getActivity(), locationManager);
         ButterKnife.bind(this, view);
+        loadQuoterInfo();
         setRetainInstance(true);
         return view;
     }
@@ -145,7 +147,6 @@ public class MakeQuoteFragment extends Fragment {
                         .build()
                         .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
                         .show();
-
             }
 
         }
@@ -175,10 +176,10 @@ public class MakeQuoteFragment extends Fragment {
                 .setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.camera:
-                            takePhoto();
+                            imageFilePath = MediaUtil.takePhoto(getActivity());
                             return true;
                         case R.id.gallery:
-                            selectPhotoFromGallery();
+                            MediaUtil.selectPhotoFromGallery(getActivity());
                             return true;
                         default:
                             return false;
@@ -207,35 +208,27 @@ public class MakeQuoteFragment extends Fragment {
                 });
     }
 
-    private void selectPhotoFromGallery() {
-        if (MediaUtil.isPermissionGranted(getActivity())) {
+    private void loadQuoterInfo() {
 
-            Intent selectImage = new Intent();
-            selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
-            selectImage.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            selectImage.addCategory(Intent.CATEGORY_OPENABLE);
-            startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION),
-                    Constant.IMAGE_PICK_CODE);
-        }
-    }
-
-    private void takePhoto() {
-        Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (captureImage.resolveActivity(getActivity().getPackageManager()) != null) {
-
-            File imageFile = null;
-            try {
-                imageFile = MediaUtil.createImageFile(getActivity());
-            } catch (IOException e) {
-                e.printStackTrace();
+        Bundle receivedBundle;
+        try {
+            receivedBundle = getArguments();
+            String name = receivedBundle.getString(Constant.USERNAME).trim();
+            imageFilePath = receivedBundle.getString(Constant.PHOTO_URI);
+            Glide.with(getActivity())
+                    .load(imageFilePath)
+                    .into(avatar);
+            Pattern pattern = Pattern.compile(getString(R.string.space_pattern));
+            boolean spaceFound = pattern.matcher(name).find();
+            if (spaceFound) {
+                String[] names = name.split(getString(R.string.space_pattern));
+                firstName.setText(names[0]);
+                lastName.setText(names[1]);
+            } else {
+                firstName.setText(name);
             }
-
-            if (imageFile != null) {
-                Uri imageUri = FileProvider.getUriForFile(getActivity(), getString(R.string.authority), imageFile);
-                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                imageFilePath = imageFile.getAbsolutePath();
-                startActivityForResult(captureImage, Constant.REQUEST_IMAGE_CAPTURE);
-            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 

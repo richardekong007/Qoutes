@@ -40,9 +40,9 @@ public class LocalQuoteAdapter extends RecyclerView.Adapter<LocalQuoteAdapter.Lo
 
         final LocalQuote localQuote = quotes.get(position);
         Glide.with(holder.itemView.getContext())
-                .load(localQuote.photoUrl)
+                .load(localQuote.getPhotoUrl())
                 .into(holder.avatar);
-        holder.authorName.setText(localQuote.authorName);
+        holder.authorName.setText(localQuote.getAuthorName());
         holder.viewQuote.setOnClickListener(view -> {
             int id = position + 1;
             viewQuoteClickListener.onViewQuoteClick(id, localQuote);
@@ -69,7 +69,7 @@ public class LocalQuoteAdapter extends RecyclerView.Adapter<LocalQuoteAdapter.Lo
         @BindView(R.id.view_quote)
         AppCompatButton viewQuote;
 
-        public LocalQuotesViewHolder(View view) {
+        private LocalQuotesViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

@@ -15,25 +15,72 @@ import java.util.List;
 public class LocalQuote extends Model {
 
     @Column(name = "AUTHOR_NAME")
-    public String authorName;
+    private String authorName;
 
     @Column(name = "STATEMENT")
-    public String statement;
+    private String statement;
 
     @Column(name = "BIRTH_PLACE")
-    public String birthPlace;
+    private String birthPlace;
 
     @Column(name = "PHOTO_URL")
-    public String photoUrl;
+    private String photoUrl;
 
     @Column(name = "LATITUDE")
-    public double latitude;
+    private double latitude;
 
-    @Column(name="LONGITUDE")
-    public double longitude;
+    @Column(name = "LONGITUDE")
+    private double longitude;
 
     private static int initialSize;
 
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
+
+    public void setStatement(String statement) {
+        this.statement = statement;
+    }
+
+    public String getBirthPlace() {
+        return birthPlace;
+    }
+
+    public void setBirthPlace(String birthPlace) {
+        this.birthPlace = birthPlace;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public static void saveQuoteRecord(@NonNull String authorName, @NonNull String statement, @NonNull String birthPlace,
                                        @NonNull String photoUrl, double latitude, double longitude) {
@@ -66,7 +113,7 @@ public class LocalQuote extends Model {
         return new Select().from(LocalQuote.class).execute();
     }
 
-    public static int getCount(){
+    public static int getCount() {
         return new Select().from(LocalQuote.class).execute().size();
     }
 
@@ -83,7 +130,7 @@ public class LocalQuote extends Model {
         new Delete().from(LocalQuote.class).where("Id = ?", id).execute();
     }
 
-    public static boolean isSave(){
+    public static boolean isSave() {
         return initialSize < getCount();
     }
 }

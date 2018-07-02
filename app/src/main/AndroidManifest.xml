@@ -43,7 +43,7 @@
             android:value="LocalQuotes" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="4" />
+            android:value="9" />
 
         <activity android:name=".ui.activity.SplashScreen">
             <intent-filter>

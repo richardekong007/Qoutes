@@ -20,7 +20,7 @@
     <string name="twitter">Twitter</string>
     <string name="instagram">Instagram</string>
     <string name="authority">com.richydave.quotes.fileprovider</string>
-    <string name="camera_cancel">Image capture cancelled!</string>
+    <string name="camera_cancel">Do you wish to cancel image capture process?</string>
     <string name="enable_provider_dialog_title">Provider Disabled</string>
     <string name="enable_provider_message">Please turn on your network to record quote location</string>
     <string name="ok">ok</string>
@@ -57,4 +57,7 @@
     <string name="quote_success_mesaage">Quote saved successfully!</string>
     <string name="network_error">Network Error</string>
     <string name="network_error_message">Unable to resolve host address.Establish internet connectivity,  but contact your network administrator if the problem persists</string>
+    <string name="confirmation_tittle">Confirmation Message</string>
+    <string name="space_pattern">\\s</string>
+    <string name="sign_up_conflict_warning">User Credential Conflict</string>
 </resources>

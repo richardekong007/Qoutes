@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.content_frame)
     LinearLayout contentFrame;
 
+    private Intent receivedIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         CircleImageView avatar = navigationHeader.findViewById(R.id.avatar);
         TextView authorName = navigationHeader.findViewById(R.id.author_name);
         try {
-            Intent receivedIntent = getIntent();
+            receivedIntent = getIntent();
             String name = receivedIntent.getStringExtra(Constant.USERNAME);
             String photoUri = receivedIntent.getStringExtra(Constant.PHOTO_URI);
             authorName.setText(name);
@@ -103,14 +104,21 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.make_quote:
-                        FragmentUtil.replaceFragment(getSupportFragmentManager(), new MakeQuoteFragment(), null, true);
+                        Bundle args = new Bundle();
+                        String photoUri = receivedIntent.getStringExtra(Constant.PHOTO_URI);
+                        String userName = receivedIntent.getStringExtra(Constant.USERNAME);
+                        args.putString(Constant.PHOTO_URI, photoUri);
+                        args.putString(Constant.USERNAME, userName);
+
+                        FragmentUtil.replaceFragment(getSupportFragmentManager(), new MakeQuoteFragment(), args, true);
                         drawer.closeDrawers();
                         return true;
                     case R.id.view_online_quotes:
                         FragmentUtil.replaceFragment(getSupportFragmentManager(), new OnlineQuotesFragment(), null, true);
                         drawer.closeDrawers();
                         return true;
-                    case R.id.view_saved_quotes:
+                    case R.id.view_local_quotes:
+
                         FragmentUtil.replaceFragment(getSupportFragmentManager(), new LocalQuotesFragment(), null, true);
                         drawer.closeDrawers();
                         return true;

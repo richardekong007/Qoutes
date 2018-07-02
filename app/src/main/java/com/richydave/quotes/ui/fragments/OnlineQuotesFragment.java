@@ -112,6 +112,7 @@ public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter
                         onlineQuotes.addAll(quotes);
                         adapter.notifyDataSetChanged();
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         setLoading(false);
@@ -123,7 +124,6 @@ public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter
                                     dialog.dismiss();
                                 }))
                                 .show();
-
                         e.printStackTrace();
                     }
                 }));
