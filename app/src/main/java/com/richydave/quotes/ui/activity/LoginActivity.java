@@ -1,14 +1,14 @@
 package com.richydave.quotes.ui.activity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.widget.Toast;
 
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
@@ -18,9 +18,6 @@ import com.richydave.quotes.ui.Dialogs.InformationDialog;
 import com.richydave.quotes.ui.Dialogs.QuestionDialog;
 import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 import com.richydave.quotes.util.MediaUtil;
-
-import java.io.File;
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,78 +68,55 @@ public class LoginActivity extends AppCompatActivity {
             MediaUtil.displayImage(this, disposable, avatar, imageUri);
         }
         if (requestCode == Constant.REQUEST_IMAGE_CAPTURE) {
-
             MediaUtil.displayImage(this, imageFilePath, avatar);
-
-        } else if (resultCode == RESULT_CANCELED) {
-            new QuestionDialog(this, getString(R.string.confirmation_tittle), getString(R.string.camera_cancel))
-                    .build()
-                    .setPositiveButton(getString(R.string.yes), (dialog, id) -> dialog.dismiss())
-                    .setNegativeButton(getString(R.string.no), ((dialog, id) -> {
-                        imageFilePath = MediaUtil.takePhoto(this);
-                        dialog.dismiss();
-                    }))
-                    .show();
-            Toast.makeText(this, getString(R.string.camera_cancel), Toast.LENGTH_LONG).show();
+        }
+        if (resultCode == RESULT_CANCELED) {
+            requestImageRecapture(requestCode);
         }
     }
 
     @OnClick(R.id.login)
     public void onLoginClick() {
-        String name = "";
-        String pwd = "";
-        boolean passwordExists, userNameExists;
-        try {
-            name = userName.getText().toString().trim();
-            pwd = password.getText().toString().trim();
-            passwordExists = UserCredential.passwordExist(this, name);
-            userNameExists = UserCredential.userNameExist(this, name);
-            if (userNameExists && passwordExists) {
-                imageFilePath = UserCredential.getPhotoUri(this, name);
-                viewOnlineQuotes(name, imageFilePath);
-            } else {
-                new ErrorDialog(this, getString(R.string.login_error), getString(R.string.wrong_user))
-                        .build()
-                        .setPositiveButton(getString(R.string.close), (dialog, which) -> dialog.dismiss())
-                        .show();
-            }
-        } catch (NullPointerException e) {
-            if (name.equals("") || pwd.equals("")) {
-                new ErrorDialog(this, getString(R.string.login_error), getString(R.string.empty_user_credential))
-                        .build()
-                        .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
-                        .show();
-            } else {
-                new ErrorDialog(this, getString(R.string.login_error), getString(R.string.login_error_message))
-                        .build()
-                        .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
-                        .show();
-            }
-        }
+        login();
     }
 
     @OnClick(R.id.sign_up)
     public void onSignUpClick() {
-        String name;
-        String pwd;
-        name = userName.getText().toString().trim();
-        pwd = password.getText().toString().trim();
-        //for practical purpose, this is not secure
-        if (UserCredential.isCredentialCorrect(this, name, pwd)) {
-            UserCredential.saveUserCredential(this, name, imageFilePath, pwd);
-            if (UserCredential.wasSave()) {
-                viewOnlineQuotes(name, imageFilePath);
-                new InformationDialog(this, getString(R.string.signup_success), getString(R.string.signup_success_message))
-                        .build()
-                        .setPositiveButton(getString(R.string.ok), ((dialog, which) -> dialog.dismiss()))
-                        .show();
-            }
-        }
+        signUp();
     }
 
     @OnClick(R.id.avatar)
     public void onAvatarClick() {
         showPictureMenu();
+    }
+
+    private void recaptureImage(DialogInterface.OnClickListener action) {
+        new QuestionDialog(this, getString(R.string.confirmation_tittle), getString(R.string.camera_cancel))
+                .build()
+                .setPositiveButton(getString(R.string.yes), (dialog, id) -> dialog.dismiss())
+                .setNegativeButton(getString(R.string.no), action)
+                .show();
+    }
+
+    private void showError(Context context, String title, String message) {
+        new ErrorDialog(context, title, message)
+                .build()
+                .setPositiveButton(getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
+                .show();
+    }
+
+    private void requestImageRecapture(int requestCode) {
+        if (requestCode == Constant.REQUEST_IMAGE_CAPTURE) {
+            recaptureImage(((dialog, id) -> {
+                imageFilePath = MediaUtil.takePhoto(this);
+                dialog.dismiss();
+            }));
+        } else {
+            recaptureImage(((dialog, id) -> {
+                MediaUtil.selectPhotoFromGallery(this);
+                dialog.dismiss();
+            }));
+        }
     }
 
     private void viewOnlineQuotes(String name, String imageFilePath) {
@@ -154,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
     }
 
     private void showPictureMenu() {
@@ -175,4 +148,56 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void signUp() {
+        String name;
+        String pwd;
+        name = userName.getText().toString().trim();
+        pwd = password.getText().toString().trim();
+        //for practical purpose, this is not secure
+        if (UserCredential.isCredentialCorrect(this, name, pwd)) {
+            UserCredential.saveUserCredential(this, name, imageFilePath, pwd);
+            if (UserCredential.wasSave()) {
+                viewOnlineQuotes(name, imageFilePath);
+                new InformationDialog(this, getString(R.string.signup_success), getString(R.string.signup_success_message))
+                        .build()
+                        .setPositiveButton(getString(R.string.ok), ((dialog, which) -> dialog.dismiss()))
+                        .show();
+            }
+        }
+    }
+
+    private void login() {
+        String name = "";
+        String pwd = "";
+        boolean passwordExists, userNameExists;
+        try {
+            boolean userNameEmpty = userName.getText().toString().equals("");
+            boolean passwordEmpty = password.getText().toString().equals("");
+            if (!(userNameEmpty || passwordEmpty)) {
+
+                name = userName.getText().toString().trim();
+                pwd = password.getText().toString().trim();
+                passwordExists = UserCredential.passwordExists(this, name, pwd);
+                userNameExists = UserCredential.userNameExist(this, name);
+                if ((userNameExists && passwordExists)) {
+                    if ((UserCredential.getDbPassword(this, name).equals(pwd))) {
+                        imageFilePath = UserCredential.getPhotoUri(this, name);
+                        viewOnlineQuotes(name, imageFilePath);
+                    } else {
+                        showError(this, getString(R.string.login_error), getString(R.string.wrong_password));
+                    }
+                } else {
+                    showError(this, getString(R.string.login_error), getString(R.string.wrong_user));
+                }
+            } else {
+                showError(this, getString(R.string.login_error), getString(R.string.provide_uname_password));
+            }
+        } catch (NullPointerException e) {
+            if (name.equals("") || pwd.equals("")) {
+                showError(this, getString(R.string.login_error), getString(R.string.empty_user_credential));
+            } else {
+                showError(this, getString(R.string.login_error), getString(R.string.login_error_message));
+            }
+        }
+    }
 }

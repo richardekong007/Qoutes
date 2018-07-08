@@ -14,9 +14,9 @@
         android:id="@+id/avatar"
         android:layout_width="@dimen/avatar_size_large"
         android:layout_height="@dimen/avatar_size_large"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_medium"
         android:layout_gravity="center"
-        android:background="@drawable/ic_account"/>
+        android:background ="@drawable/ic_account_white"/>
 
     <TextView
         android:id="@+id/author_name"

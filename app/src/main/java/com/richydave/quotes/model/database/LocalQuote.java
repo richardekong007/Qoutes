@@ -11,7 +11,7 @@ import com.activeandroid.query.Select;
 
 import java.util.List;
 
-@Table(name = "Quotes")
+@Table(name = "QUOTES")
 public class LocalQuote extends Model {
 
     @Column(name = "AUTHOR_NAME")
@@ -19,9 +19,6 @@ public class LocalQuote extends Model {
 
     @Column(name = "STATEMENT")
     private String statement;
-
-    @Column(name = "BIRTH_PLACE")
-    private String birthPlace;
 
     @Column(name = "PHOTO_URL")
     private String photoUrl;
@@ -50,14 +47,6 @@ public class LocalQuote extends Model {
         this.statement = statement;
     }
 
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
-
     public String getPhotoUrl() {
         return photoUrl;
     }
@@ -82,13 +71,12 @@ public class LocalQuote extends Model {
         this.longitude = longitude;
     }
 
-    public static void saveQuoteRecord(@NonNull String authorName, @NonNull String statement, @NonNull String birthPlace,
+    public static void saveQuoteRecord(@NonNull String authorName, @NonNull String statement,
                                        @NonNull String photoUrl, double latitude, double longitude) {
 
         LocalQuote localQuote = new LocalQuote();
         localQuote.authorName = authorName;
         localQuote.statement = statement;
-        localQuote.birthPlace = birthPlace;
         localQuote.photoUrl = photoUrl;
         localQuote.latitude = latitude;
         localQuote.longitude = longitude;
@@ -101,7 +89,7 @@ public class LocalQuote extends Model {
         ActiveAndroid.beginTransaction();
         try {
             for (LocalQuote quote : quoteRecords) {
-                saveQuoteRecord(quote.authorName, quote.statement, quote.birthPlace, quote.photoUrl, quote.latitude, quote.longitude);
+                saveQuoteRecord(quote.authorName, quote.statement, quote.photoUrl, quote.latitude, quote.longitude);
             }
             ActiveAndroid.setTransactionSuccessful();
         } finally {

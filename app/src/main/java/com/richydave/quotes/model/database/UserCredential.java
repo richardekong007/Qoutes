@@ -1,7 +1,9 @@
 package com.richydave.quotes.model.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -9,9 +11,12 @@ import com.activeandroid.query.Select;
 import com.activeandroid.query.Update;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
+import com.richydave.quotes.UpdateProfileListener;
 import com.richydave.quotes.ui.Dialogs.ErrorDialog;
+import com.richydave.quotes.ui.Dialogs.InformationDialog;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 @Table(name = Constant.TABLE_USER_CREDENTIALS)
@@ -30,6 +35,42 @@ public class UserCredential extends Model {
 
     private static int initialSize;
 
+    private static boolean wasUpdated;
+
+    private static UpdateProfileListener updateProfileListener;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(String photoUri) {
+        this.photoUri = photoUri;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public static boolean getWasUpdated() {
+        return wasUpdated;
+    }
+
+    private static void setWasUpdated(boolean wasUpdated) {
+        UserCredential.wasUpdated = wasUpdated;
+    }
+
     public static int getCount() {
         return new Select().all()
                 .from(UserCredential.class)
@@ -39,38 +80,84 @@ public class UserCredential extends Model {
     public static boolean userNameExist(Context context, String username) {
         try {
             UserCredential userCredential = new Select().from(UserCredential.class)
-                    .where("USERNAME = ?", username).executeSingle();
+                    .where(Constant.COLUMN_USERNAME + " = ?", username).executeSingle();
             return userCredential.userName != null;
         } catch (NullPointerException e) {
             return false;
         }
     }
 
-    public static boolean passwordExist(Context context, String username) {
+    public static boolean passwordExists(Context context, String username, String inputPassword) {
         try {
             UserCredential userCredential = new Select()
                     .from(UserCredential.class)
                     .where("USERNAME = ?", username)
                     .executeSingle();
-            return userCredential.password != null;
+            return userCredential.getPassword() != null && userCredential.getPassword().equals(inputPassword);
         } catch (NullPointerException e) {
             return false;
         }
     }
 
-    public static void updateUserCredential(String userName, String... columns) {
-        Update updateStatement = new Update(UserCredential.class);
+    public static String getDbPassword(Context context, String userName) {
+        String password = "";
         try {
-            for (String column : columns) {
-                updateStatement.set(column)
-                        .where(Constant.COLUMN_USERNAME + "=?", userName)
-                        .execute();
-            }
-        } catch (Exception e) {
-
+            UserCredential userCredential = new Select().from(UserCredential.class)
+                    .where(Constant.USERNAME + "=?", userName).executeSingle();
+            password = userCredential.password;
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        return password;
     }
+
+    public static void updateUserCredentials(Context context, String userName, HashMap<String, String> valueMap) {
+
+        if (userNameExist(context, userName)) {
+            UserCredential currentRecord = getUserRecord(context, userName);
+            for (int i = 0; i < valueMap.size(); i++) {
+                new Update(UserCredential.class)
+                        .set(valueMap.keySet().toArray()[i] + "=?", valueMap.values().toArray()[i])
+                        .execute();
+            }
+            UserCredential newRecord = getUserRecord(context, userName);
+            if (currentRecord.photoUri.equals(newRecord.photoUri)
+                    && currentRecord.password.equals(newRecord.password)) {
+                updateProfileListener.onUpdateProfile(getUserRecord(context,userName));
+                new InformationDialog(context, context.getString(R.string.update_title), context.getString(R.string.update_success_message))
+                        .build()
+                        .setPositiveButton(context.getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                        .show();
+            } else {
+                new ErrorDialog(context, context.getString(R.string.update_title), context.getString(R.string.update_failure_message))
+                        .build()
+                        .setPositiveButton(context.getString(R.string.close), ((dialog, which) -> dialog.dismiss()))
+                        .show();
+            }
+        } else {
+            new ErrorDialog(context, context.getString(R.string.error), context.getString(R.string.no_record))
+                    .build()
+                    .setPositiveButton(context.getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                    .show();
+        }
+    }
+
+    public static UserCredential getUserRecord(Context context, String userName) {
+        UserCredential currentRecord = null;
+        try {
+            currentRecord = new Select().from(UserCredential.class)
+                    .where(Constant.COLUMN_USERNAME + "=?", userName)
+                    .executeSingle();
+        } catch (NullPointerException e) {
+            new ErrorDialog(context, context.getString(R.string.error_tittle), context.getString(R.string.no_record))
+                    .build()
+                    .setPositiveButton(context.getString(R.string.close), (dialog, id) -> dialog.dismiss())
+                    .show();
+            e.printStackTrace();
+        }
+        return currentRecord;
+    }
+
 
     public static void saveUserCredential(Context context, String username, String photoUrl, String password) {
 
@@ -97,12 +184,8 @@ public class UserCredential extends Model {
     public static String getPhotoUri(Context context, String userName) {
         String photoUri = null;
         try {
-            if (userNameExist(context, userName)) {
-                UserCredential userCredential = new Select().from(UserCredential.class)
-                        .where(Constant.USERNAME + "=?", userName).executeSingle();
-                photoUri = userCredential.photoUri;
-            }
-
+            UserCredential record = getUserRecord(context, userName);
+            photoUri = record.photoUri;
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -155,5 +238,9 @@ public class UserCredential extends Model {
             }
         }
         return false;
+    }
+
+    public static void setUpdateProfileListener(UpdateProfileListener listener){
+        updateProfileListener = listener;
     }
 }

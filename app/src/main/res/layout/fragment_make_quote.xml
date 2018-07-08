@@ -55,23 +55,13 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/birth_place"
-            style="@style/textInputStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:hint="@string/birth_place_name_hint"
-            />
-
-
-        <EditText
             android:id="@+id/quote"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:gravity="center"
+            android:gravity="center|top"
             style="@style/textInputStyle"
             android:hint="@string/make_quote_instruction" />
 

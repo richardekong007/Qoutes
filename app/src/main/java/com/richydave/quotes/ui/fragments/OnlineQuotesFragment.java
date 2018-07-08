@@ -20,7 +20,6 @@ import com.richydave.quotes.model.Quote;
 import com.richydave.quotes.network.Api;
 import com.richydave.quotes.ui.Dialogs.ErrorDialog;
 import com.richydave.quotes.ui.activity.LoginActivity;
-import com.richydave.quotes.ui.activity.MainActivity;
 import com.richydave.quotes.util.FragmentUtil;
 
 import java.io.IOException;
@@ -69,13 +68,15 @@ public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter
     public void onViewQuoteClick(Quote quote) {
 
         Bundle args = new Bundle();
+
         args.putString(Constant.PHOTO_URI, quote.getPhotoUrl());
         args.putString(Constant.AUTHOR, quote.getAuthorName());
         args.putString(Constant.STATEMENT, quote.getStatement());
         args.putString(Constant.BIRTH_PLACE, quote.getBirthPlace());
-        args.putParcelable(Constant.LOCATION, quote.getLocation());
+        args.putParcelable(Constant.ONLINE_LOCATION, quote.getLocation());
+        args.putString(Constant.QUOTE_TAG, Constant.ONLINE_QUOTE);
 
-        FragmentUtil.replaceFragment(getFragmentManager(), new ViewQuoteFragment(), args, true);
+        FragmentUtil.replaceFragment(getFragmentManager(), new ViewOnlineQuoteFragment(), args, true);
     }
 
     private void init() {
@@ -88,12 +89,15 @@ public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
         // and get online Quotes here
-        getQuotes();
+        loadQuotes();
     }
 
-    private void getQuotes() {
+    private void loadQuotes() {
+
         setLoading(true);
-        disposable.add(Api.getInstance().getWebService().getOnlineQuotes()
+        disposable.add(Api.getInstance()
+                .getWebService()
+                .getOnlineQuotes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(mapper -> {
@@ -146,8 +150,6 @@ public class OnlineQuotesFragment extends Fragment implements OnlineQuoteAdapter
     }
 
     private void setLoading(boolean loading) {
-
         progressIndicator.setVisibility(loading ? View.VISIBLE : View.GONE);
-
     }
 }

@@ -1,6 +1,8 @@
 package com.richydave.quotes;
 
 
+import android.os.Build;
+
 public interface Constant {
 
     String BASE_URL = "https://api.myjson.com/";
@@ -29,6 +31,14 @@ public interface Constant {
 
     int TILT_ANGLE = 45;
 
+    int BUILD_VERSION = Build.VERSION.SDK_INT;
+
+    int MASHMALLOW = Build.VERSION_CODES.M;
+
+    int KITKAT = Build.VERSION_CODES.KITKAT;
+
+    int HONEYCOMB = Build.VERSION_CODES.HONEYCOMB;
+
     String IMAGE_CONTENT_TYPE = "image/*";
 
     CharSequence SELECT_IMAGE_INSTRUCTION = "Select Image";
@@ -44,6 +54,16 @@ public interface Constant {
     String FILE_NAME_FORMAT = "yyyyMMdd_HHmmss";
 
     String IMAGE_FILE_TYPE = ".jpg";
+
+    String ONLINE_QUOTE = "ONLINE_QUOTE";
+
+    String LOCAL_LOCATION = "LOCAL_LOCATION";
+
+    String LOCAL_QUOTE = "LOCAL_QUOTE";
+
+    String ONLINE_LOCATION = "ONLINE_LOCATION";
+
+    String QUOTE_TAG = "QUOTE_TAG";
 
     String ADDRESS = "ADDRESS";
 
@@ -65,4 +85,5 @@ public interface Constant {
 
     long MIN_LOCATION_UPDATE_TIME = 5000;
 
+    String ADDRESS_FORMAT = "%s, %s, %s";
 }

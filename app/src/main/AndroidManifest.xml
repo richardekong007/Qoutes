@@ -43,9 +43,10 @@
             android:value="LocalQuotes" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="9" />
+            android:value="12" />
 
-        <activity android:name=".ui.activity.SplashScreen">
+        <activity android:name=".ui.activity.SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -53,14 +54,16 @@
 
         </activity>
 
-        <activity android:name=".ui.activity.LoginActivity">
+        <activity android:name=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.MainActivity" android:parentActivityName=".ui.activity.LoginActivity">
+        <activity android:name=".ui.activity.MainActivity" android:parentActivityName=".ui.activity.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

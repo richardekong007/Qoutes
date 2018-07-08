@@ -2,7 +2,8 @@
     <string name="app_name">Quotes</string>
     <string name="author_item_button_text">View Quote</string>
     <string name="Quote">Quote:</string>
-    <string name="birth_place_button_text">Birth Place</string>
+    <string name="places_button_text">Places</string>
+    <string name="quote_place">Quote Place</string>
     <string name="first_name_hint">First Name</string>
     <string name="make_quote_instruction">Say Something please!</string>
     <string name="post_quote_text">Post</string>
@@ -26,7 +27,7 @@
     <string name="ok">ok</string>
     <string name="birth_place_name_hint">Birth place</string>
     <string name="fine_location">Fine location not enabled</string>
-    <string name="coarse_location">Coarse loaction   not enabled</string>
+    <string name="coarse_location">Coarse location not enabled</string>
     <string name="location_permission_title">Location permission</string>
     <string name="author_name_format">%s %s</string>
     <string name="saved">Saved!</string>
@@ -54,10 +55,25 @@
     <string name="empty_user_credential">Provide username and password</string>
     <string name="wrong_user">Wrong user credentials</string>
     <string name="quote_creation_title">Quote Creation</string>
-    <string name="quote_success_mesaage">Quote saved successfully!</string>
+    <string name="quote_success_message">Quote saved successfully!</string>
     <string name="network_error">Network Error</string>
     <string name="network_error_message">Unable to resolve host address.Establish internet connectivity,  but contact your network administrator if the problem persists</string>
     <string name="confirmation_tittle">Confirmation Message</string>
     <string name="space_pattern">\\s</string>
     <string name="sign_up_conflict_warning">User Credential Conflict</string>
+    <string name="birth_place">Birth Place</string>
+    <string name="Location_error_message">Quote Coordinate is unavailable</string>
+    <string name="location_error_title">Location Error</string>
+    <string name="place">Places</string>
+    <string name="update">Update Profile</string>
+    <string name="wrong_password">Wrong Password</string>
+    <string name="provide_uname_password">You must provide password and username</string>
+    <string name="update_title">Update Information</string>
+    <string name="update_success_message">Changes saved successfully</string>
+    <string name="update_failure_message">Changes were not saved</string>
+    <string name="update_instruction_message">You must provide valid username and password</string>
+    <string name="new_password">New Password</string>
+    <string name="wrong_credentials">Wrong username or password</string>
+    <string name="error_tittle">Error</string>
+    <string name="no_record">Record not found</string>
 </resources>

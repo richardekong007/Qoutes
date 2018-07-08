@@ -17,16 +17,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
+import com.richydave.quotes.UpdateProfileListener;
+import com.richydave.quotes.model.database.UserCredential;
 import com.richydave.quotes.ui.fragments.LocalQuotesFragment;
 import com.richydave.quotes.ui.fragments.MakeQuoteFragment;
 import com.richydave.quotes.ui.fragments.OnlineQuotesFragment;
+import com.richydave.quotes.ui.fragments.UpdateProfileFragment;
 import com.richydave.quotes.util.FragmentUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UpdateProfileListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -40,20 +43,35 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.content_frame)
     LinearLayout contentFrame;
 
+    private CircleImageView avatar;
+
+    private TextView authorName;
+
     private Intent receivedIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
+
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        UserCredential.setUpdateProfileListener(this);
+
         setNavigationHeader();
+
         setNavigationItemSelectedListener();
+
         placeFirstFragment();
 
     }
@@ -73,6 +91,18 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    public void onUpdateProfile(UserCredential userRecord) {
+        try {
+            Glide.with(this)
+                    .load(userRecord.getPhotoUri())
+                    .into(avatar);
+            authorName.setText(userRecord.getUserName());
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void placeFirstFragment() {
         FragmentUtil.replaceFragment(getSupportFragmentManager(), new OnlineQuotesFragment(), null, false);
@@ -81,16 +111,23 @@ public class MainActivity extends AppCompatActivity {
     private void setNavigationHeader() {
 
         View navigationHeader = navigationView.inflateHeaderView(R.layout.nav_header);
-        CircleImageView avatar = navigationHeader.findViewById(R.id.avatar);
-        TextView authorName = navigationHeader.findViewById(R.id.author_name);
+        avatar = navigationHeader.findViewById(R.id.avatar);
+        authorName = navigationHeader.findViewById(R.id.author_name);
         try {
             receivedIntent = getIntent();
-            String name = receivedIntent.getStringExtra(Constant.USERNAME);
+            String name = receivedIntent.getStringExtra(Constant.COLUMN_USERNAME);
             String photoUri = receivedIntent.getStringExtra(Constant.PHOTO_URI);
             authorName.setText(name);
             Glide.with(this)
                     .load(photoUri)
                     .into(avatar);
+            navigationHeader.setOnClickListener(listener -> {
+                Bundle args = new Bundle();
+                args.putString(Constant.USERNAME, name);
+                args.putString(Constant.PHOTO_URI, photoUri);
+                FragmentUtil.replaceFragment(getSupportFragmentManager(), new UpdateProfileFragment(), args, true);
+                drawer.closeDrawers();
+            });
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

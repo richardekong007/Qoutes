@@ -14,18 +14,18 @@ import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatImageView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
-import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -39,15 +39,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.richydave.quotes.Constant.BUILD_VERSION;
+import static com.richydave.quotes.Constant.HONEYCOMB;
+import static com.richydave.quotes.Constant.KITKAT;
+import static com.richydave.quotes.Constant.MASHMALLOW;
+
 public class MediaUtil {
-
-    private static final int BUILD_VERSION = Build.VERSION.SDK_INT;
-
-    private static final int MASHMALLOW = Build.VERSION_CODES.M;
-
-    private static int KITKAT = Build.VERSION_CODES.KITKAT;
-
-    private static int HONEYCOMB = Build.VERSION_CODES.HONEYCOMB;
 
     public static String resolveMediaPath(Context context, Uri uri) {
 
@@ -92,22 +89,24 @@ public class MediaUtil {
         return filePath;
     }
 
-    public static File createImageFile(Context context) throws IOException {
+    private static File createImageFile(Context context) throws IOException {
         String timeStamp = new SimpleDateFormat(Constant.FILE_NAME_FORMAT, Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File fileSystem = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File imageFile = File.createTempFile(imageFileName, Constant.IMAGE_FILE_TYPE, fileSystem);
-        return imageFile;
+
+        return File.createTempFile(imageFileName,
+                Constant.IMAGE_FILE_TYPE,
+                fileSystem);
     }
 
-    public static boolean isPermissionGranted(Context context) {
+    private static boolean isPermissionGranted(Context context) {
         if (BUILD_VERSION >= MASHMALLOW) {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         (Activity) context,
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    showDialog("External storage ", context,
+                    showDialog(context,
                             Manifest.permission.READ_EXTERNAL_STORAGE);
 
                 } else {
@@ -127,12 +126,12 @@ public class MediaUtil {
         }
     }
 
-    private static void showDialog(String message, Context context, String readExternalStoragePermission) {
+    private static void showDialog(Context context, String readExternalStoragePermission) {
 
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
         alertBuilder.setCancelable(true);
         alertBuilder.setTitle("Permission necessary");
-        alertBuilder.setMessage(message + " permission is necessary");
+        alertBuilder.setMessage("External storage " + " permission is necessary");
         alertBuilder.setPositiveButton(android.R.string.yes,
                 (dialog, which) ->
                         ActivityCompat.requestPermissions((Activity) context,
@@ -157,24 +156,12 @@ public class MediaUtil {
         return image;
     }
 
-    public static void saveImageToGallery(Context context, File imageFile) {
-
-        try {
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), imageFile.getAbsolutePath(), imageFile.getName(), null);
-            Intent saveImageIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile));
-            context.sendBroadcast(saveImageIntent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public static void displayImage(Context context, Disposable disposable, ImageView view, Uri imageUri) {
         disposable = getBitmapObservable(context, imageUri)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bitmap -> Glide.with(context).load(bitmap).into(view)
-                        , throwable -> throwable.printStackTrace());
+                        , Throwable::printStackTrace);
     }
 
     public static void displayImage(Context context, String imageFilePath, ImageView imageView) {
@@ -191,54 +178,73 @@ public class MediaUtil {
 
             File imageFile = null;
             try {
-                imageFile = MediaUtil.createImageFile(context);
+                imageFile = createImageFile(context);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             if (imageFile != null) {
                 Uri imageUri = FileProvider.getUriForFile(context, context.getString(R.string.authority), imageFile);
                 captureImage.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 imageFilePath = imageFile.getAbsolutePath();
                 ((Activity) context).startActivityForResult(captureImage, Constant.REQUEST_IMAGE_CAPTURE);
+
             }
         }
         return imageFilePath;
     }
 
-    public static  void selectPhotoFromGallery(Context context) {
+    public static String takePhoto(Fragment fragment) {
+        Context context = fragment.getContext();
+        Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String imageFilePath = null;
+        if (captureImage.resolveActivity(context.getPackageManager()) != null) {
+
+            File imageFile = null;
+            try {
+                imageFile = createImageFile(context);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (imageFile != null) {
+                Uri imageUri = FileProvider.getUriForFile(context, context.getString(R.string.authority), imageFile);
+                captureImage.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                imageFilePath = imageFile.getAbsolutePath();
+                fragment.startActivityForResult(captureImage, Constant.REQUEST_IMAGE_CAPTURE);
+
+            }
+        }
+        return imageFilePath;
+    }
+
+    public static void selectPhotoFromGallery(Context context) {
         if (MediaUtil.isPermissionGranted(context)) {
 
-            Intent selectImage = new Intent();
-            selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
-            selectImage.setAction(Intent.ACTION_OPEN_DOCUMENT);
-            selectImage.addCategory(Intent.CATEGORY_OPENABLE);
-            ((Activity)context).startActivityForResult(Intent.createChooser(selectImage, Constant.SELECT_IMAGE_INSTRUCTION),
-                    Constant.IMAGE_PICK_CODE);
+            Intent selectImage = getGalleryIntent();
+            ((Activity) context).startActivityForResult(Intent.createChooser(selectImage,
+                    Constant.SELECT_IMAGE_INSTRUCTION), Constant.IMAGE_PICK_CODE);
+
         }
     }
 
-    public static void showPictureMenu(Context context, ImageView avatar) {
+    public static void selectPhotoFromGallery(Fragment fragment) {
+        if (MediaUtil.isPermissionGranted(fragment.getContext())) {
 
-        PopupMenuBuilder popupMenu = new PopupMenuBuilder(context, avatar, R.menu.picture_select_menu);
-        popupMenu.getInstance()
-                .setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case R.id.camera:
-                            takePhoto(context);
-                            return true;
-                        case R.id.gallery:
-                            selectPhotoFromGallery(context);
-                            return true;
-                        default:
-                            return false;
-                    }
-                });
+            Intent selectImage = getGalleryIntent();
+            fragment.startActivityForResult(Intent.createChooser(selectImage,
+                    Constant.SELECT_IMAGE_INSTRUCTION), Constant.IMAGE_PICK_CODE);
+        }
+    }
 
+    @NonNull
+    private static Intent getGalleryIntent() {
+        Intent selectImage = new Intent();
+        selectImage.setType(Constant.IMAGE_CONTENT_TYPE);
+        selectImage.setAction(Intent.ACTION_OPEN_DOCUMENT);
+        selectImage.addCategory(Intent.CATEGORY_OPENABLE);
+        return selectImage;
     }
 
     public static Observable<Bitmap> getBitmapObservable(Context context, Uri imageUri) {
         return Observable.just(getImageFromUri(context, imageUri));
     }
 }
-

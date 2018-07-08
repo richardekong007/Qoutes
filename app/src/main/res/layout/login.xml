@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_account"/>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_account"
+        android:layout_margin="@dimen/margin_extra_large"
+        style="@style/textInputStyle"
+        android:hint="@string/user_name" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_extra_large"
+        android:drawableEnd="@drawable/ic_security"
+        android:hint="@string/password"
+        style="@style/textInputStyle"
+        android:inputType="textPassword" />
+
+</LinearLayout>

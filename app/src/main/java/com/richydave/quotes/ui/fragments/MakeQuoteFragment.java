@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -27,9 +25,6 @@ import com.richydave.quotes.ui.menu.PopupMenuBuilder;
 import com.richydave.quotes.util.LocationUtil;
 import com.richydave.quotes.util.MediaUtil;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -52,9 +47,6 @@ public class MakeQuoteFragment extends Fragment {
     @BindView(R.id.last_name)
     EditText lastName;
 
-    @BindView(R.id.birth_place)
-    EditText birthPlace;
-
     @BindView(R.id.location_switch)
     SwitchCompat locationSwitch;
 
@@ -76,8 +68,6 @@ public class MakeQuoteFragment extends Fragment {
     protected double latitude;
 
     protected double longitude;
-
-    protected String address;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
@@ -123,23 +113,22 @@ public class MakeQuoteFragment extends Fragment {
 
     @OnClick(R.id.save)
     public void onSaveClick() {
-        if (locationSwitch.isChecked() && editTextNotEmpty(firstName, lastName, birthPlace, quoteInput)) {
+        if (locationSwitch.isChecked() && editTextNotEmpty(firstName, lastName, quoteInput)) {
 
             String authorName = String.format(getString(R.string.author_name_format), firstName.getText().toString(), lastName.getText().toString());
-            String bPlace = birthPlace.getText().toString();
             String statement = quoteInput.getText().toString();
             double latitude = LocationUtil.getLatitude();
             double longitude = LocationUtil.getLongitude();
 
-            LocalQuote.saveQuoteRecord(authorName, statement, bPlace, imageFilePath, latitude, longitude);
+            LocalQuote.saveQuoteRecord(authorName, statement, imageFilePath, latitude, longitude);
 
             if (LocalQuote.isSave()) {
-                new InformationDialog(getActivity(), getString(R.string.quote_creation_title), getString(R.string.quote_success_mesaage))
+                new InformationDialog(getActivity(), getString(R.string.quote_creation_title), getString(R.string.quote_success_message))
                         .build()
                         .setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
                         .show();
 
-                clear(firstName, lastName, birthPlace, quoteInput, locationSwitch, avatar);
+                clear(firstName, lastName, quoteInput, locationSwitch, avatar);
             } else {
                 String errorMessage = getString(R.string.not_saved);
                 String errorTitle = getString(R.string.error);
@@ -176,10 +165,10 @@ public class MakeQuoteFragment extends Fragment {
                 .setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.camera:
-                            imageFilePath = MediaUtil.takePhoto(getActivity());
+                            imageFilePath = MediaUtil.takePhoto( this);
                             return true;
                         case R.id.gallery:
-                            MediaUtil.selectPhotoFromGallery(getActivity());
+                            MediaUtil.selectPhotoFromGallery(this);
                             return true;
                         default:
                             return false;

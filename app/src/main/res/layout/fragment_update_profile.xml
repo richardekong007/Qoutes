@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_medium">
+
+        <include layout="@layout/login" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/new_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_extra_large"
+            android:drawableEnd="@drawable/ic_security"
+            android:hint="@string/new_password"
+            style="@style/textInputStyle"
+            android:inputType="textPassword" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/update"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:background="@drawable/rounded_rectangle_teal"
+            android:drawableStart="@drawable/ic_edit"
+            android:text="@string/update"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

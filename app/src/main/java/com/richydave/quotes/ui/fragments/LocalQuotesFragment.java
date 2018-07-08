@@ -49,10 +49,11 @@ public class LocalQuotesFragment extends Fragment implements LocalQuoteAdapter.V
             args.putString(Constant.PHOTO_URI, quote.getPhotoUrl());
             args.putString(Constant.AUTHOR, quote.getAuthorName());
             args.putString(Constant.STATEMENT, quote.getStatement());
-            args.putParcelable(Constant.LOCATION, location);
+            args.putParcelable(Constant.LOCAL_LOCATION, location);
+            args.putString(Constant.QUOTE_TAG, Constant.LOCAL_QUOTE);
         }
 
-        FragmentUtil.replaceFragment(getFragmentManager(), new ViewQuoteFragment(), args, true);
+        FragmentUtil.replaceFragment(getFragmentManager(), new ViewLocalQuoteFragment(), args, true);
     }
 
     public void init() {
