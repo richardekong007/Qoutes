@@ -19,6 +19,7 @@ import com.richydave.quotes.model.database.LocalQuote;
 import com.richydave.quotes.util.FragmentUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,8 +36,8 @@ public class LocalQuotesFragment extends Fragment implements LocalQuoteAdapter.V
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
         View view = inflater.inflate(R.layout.fragment_local_records, container, false);
         ButterKnife.bind(this, view);
-        setRetainInstance(true);
         init();
+        setRetainInstance(true);
         return view;
     }
 

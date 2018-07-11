@@ -53,8 +53,8 @@ public class MakeQuoteFragment extends Fragment {
     @BindView(R.id.quote)
     EditText quoteInput;
 
-    @BindView(R.id.post)
-    AppCompatButton post;
+    @BindView(R.id.share)
+    AppCompatButton shareQuote;
 
     @BindView(R.id.save)
     AppCompatButton saveQuote;
@@ -106,9 +106,9 @@ public class MakeQuoteFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.post)
-    public void onPostClick() {
-        showSocialMediaMenu();
+    @OnClick(R.id.share)
+    public void onShareClick() {
+        showIntentPicker();
     }
 
     @OnClick(R.id.save)
@@ -127,8 +127,6 @@ public class MakeQuoteFragment extends Fragment {
                         .build()
                         .setPositiveButton(getString(R.string.close), (dialog, id) -> dialog.dismiss())
                         .show();
-
-                clear(firstName, lastName, quoteInput, locationSwitch, avatar);
             } else {
                 String errorMessage = getString(R.string.not_saved);
                 String errorTitle = getString(R.string.error);
@@ -165,7 +163,7 @@ public class MakeQuoteFragment extends Fragment {
                 .setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.camera:
-                            imageFilePath = MediaUtil.takePhoto( this);
+                            imageFilePath = MediaUtil.takePhoto(this);
                             return true;
                         case R.id.gallery:
                             MediaUtil.selectPhotoFromGallery(this);
@@ -177,24 +175,13 @@ public class MakeQuoteFragment extends Fragment {
 
     }
 
-    private void showSocialMediaMenu() {
-        PopupMenuBuilder socialMediaMenu = new PopupMenuBuilder(getContext(), post, R.menu.social_media_select_menu);
-        socialMediaMenu.getInstance()
-                .setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case R.id.facebook:
-                            postQuoteToFacebook();
-                            return true;
-                        case R.id.twitter:
-                            postQuoteToTwitter();
-                            return true;
-                        case R.id.instagram:
-                            postQuoteToInsta();
-                            return true;
-                        default:
-                            return false;
-                    }
-                });
+    private void showIntentPicker() {
+
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType(getString(R.string.plain_text));
+        intent.putExtra(Intent.EXTRA_SUBJECT, String.format(getString(R.string.quote_subject_format), firstName.getText().toString(), lastName.getText().toString()));
+        intent.putExtra(Intent.EXTRA_TEXT, quoteInput.getText().toString());
+        startActivity(Intent.createChooser(intent, getString(R.string.intent_picker_instruction)));
     }
 
     private void loadQuoterInfo() {
@@ -232,7 +219,7 @@ public class MakeQuoteFragment extends Fragment {
         return true;
     }
 
-    private void clear(View... views) {
+    private void reset(View... views) {
 
         for (View view : views) {
             if (view instanceof SwitchCompat) {
@@ -245,14 +232,5 @@ public class MakeQuoteFragment extends Fragment {
                         .into((ImageView) view);
             }
         }
-    }
-
-    private void postQuoteToFacebook() {
-    }
-
-    private void postQuoteToTwitter() {
-    }
-
-    private void postQuoteToInsta() {
     }
 }

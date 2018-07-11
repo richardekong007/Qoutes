@@ -6,7 +6,7 @@
     <string name="quote_place">Quote Place</string>
     <string name="first_name_hint">First Name</string>
     <string name="make_quote_instruction">Say Something please!</string>
-    <string name="post_quote_text">Post</string>
+    <string name="share_quote_text">Share</string>
     <string name="save_quote_text">Save</string>
     <string name="location_label">Location</string>
     <string name="last_name_hint">Last Name</string>
@@ -76,4 +76,7 @@
     <string name="wrong_credentials">Wrong username or password</string>
     <string name="error_tittle">Error</string>
     <string name="no_record">Record not found</string>
+    <string name="plain_text">text/plain</string>
+    <string name="intent_picker_instruction">Select an application to proceed</string>
+    <string name="quote_subject_format">Quote from %s %s</string>
 </resources>
