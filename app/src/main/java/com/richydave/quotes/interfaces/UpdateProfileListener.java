@@ -1,4 +1,4 @@
-package com.richydave.quotes;
+package com.richydave.quotes.interfaces;
 
 import com.richydave.quotes.model.database.UserCredential;
 

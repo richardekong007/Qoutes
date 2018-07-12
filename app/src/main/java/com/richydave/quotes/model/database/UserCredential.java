@@ -1,6 +1,5 @@
 package com.richydave.quotes.model.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 
 import com.activeandroid.ActiveAndroid;
@@ -11,11 +10,10 @@ import com.activeandroid.query.Select;
 import com.activeandroid.query.Update;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
-import com.richydave.quotes.UpdateProfileListener;
+import com.richydave.quotes.interfaces.UpdateProfileListener;
 import com.richydave.quotes.ui.Dialogs.ErrorDialog;
 import com.richydave.quotes.ui.Dialogs.InformationDialog;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 

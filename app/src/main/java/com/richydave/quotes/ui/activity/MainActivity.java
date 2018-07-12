@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.Constant;
 import com.richydave.quotes.R;
-import com.richydave.quotes.UpdateProfileListener;
+import com.richydave.quotes.interfaces.UpdateProfileListener;
 import com.richydave.quotes.model.database.UserCredential;
 import com.richydave.quotes.ui.fragments.LocalQuotesFragment;
 import com.richydave.quotes.ui.fragments.MakeQuoteFragment;

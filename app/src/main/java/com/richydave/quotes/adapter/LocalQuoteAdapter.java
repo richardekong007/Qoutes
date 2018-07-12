@@ -12,11 +12,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.richydave.quotes.R;
-import com.richydave.quotes.UpdateProfileListener;
 import com.richydave.quotes.model.database.LocalQuote;
-import com.richydave.quotes.model.database.UserCredential;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
